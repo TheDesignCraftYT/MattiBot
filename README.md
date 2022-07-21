@@ -1,2 +1,2 @@
-# mattibot
-Der Matti-Discord-Bot
+# MattiBot
+## Der Matti-Discord-Bot
