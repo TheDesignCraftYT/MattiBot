@@ -27,7 +27,7 @@ public class HelpActionRowListener extends ListenerAdapter {
 
             if (arg3 != null) {
 
-                event.editMessageEmbeds(HelpEmbeds.command(arg3, event.getTextChannel())).setActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).queue();
+                event.editMessageEmbeds(HelpEmbeds.command(arg3, event.getChannel().asTextChannel())).setActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).queue();
 
             } else {
 

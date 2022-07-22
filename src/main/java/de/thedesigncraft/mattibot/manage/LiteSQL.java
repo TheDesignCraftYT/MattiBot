@@ -1,16 +1,10 @@
 package de.thedesigncraft.mattibot.manage;
 
-import de.thedesigncraft.mattibot.MattiBot;
-import de.thedesigncraft.mattibot.constants.values.MainValues;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class LiteSQL {
 

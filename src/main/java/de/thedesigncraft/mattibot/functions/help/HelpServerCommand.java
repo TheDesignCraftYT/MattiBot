@@ -94,7 +94,7 @@ public class HelpServerCommand implements ServerCommand {
 
                 } else if (arg3 != null) {
 
-                    event.getMessage().replyEmbeds(HelpEmbeds.command(arg3, event.getTextChannel())).setActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).mentionRepliedUser(false).queue();
+                    event.getMessage().replyEmbeds(HelpEmbeds.command(arg3, event.getChannel().asTextChannel())).setActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).mentionRepliedUser(false).queue();
 
                 } else {
 
@@ -140,7 +140,7 @@ public class HelpServerCommand implements ServerCommand {
 
             ServerCommand arg3 = ServerCommandManager.commandsMap.get(event.getOption("command").getAsString().replace("/", ""));
 
-            event.replyEmbeds(HelpEmbeds.command(arg3, event.getTextChannel())).addActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).queue();
+            event.replyEmbeds(HelpEmbeds.command(arg3, event.getChannel().asTextChannel())).addActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).queue();
 
         } else {
 

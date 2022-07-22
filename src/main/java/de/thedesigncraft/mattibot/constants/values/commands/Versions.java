@@ -12,6 +12,7 @@ public interface Versions {
 
         returnList.add("v1.0.0-alpha.1");
         returnList.add("v1.0.0-alpha.2");
+        returnList.add("v1.0.0-alpha.3");
 
         return returnList;
 

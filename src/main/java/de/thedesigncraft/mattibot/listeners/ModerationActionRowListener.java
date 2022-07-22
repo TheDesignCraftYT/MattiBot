@@ -20,27 +20,51 @@ public class ModerationActionRowListener extends ListenerAdapter {
 
         if(StandardActionRows.proofButton(event, "warn.success", user)) {
 
-            String reason = event.getButton().getId().split("&")[1].replace("reason=", "");
-
             Member member = event.getGuild().getMemberById(event.getMessage().getEmbeds().get(0).getDescription().replace("<", "III").replace(">", "III").replace("@", "").split("III")[1]);
 
-            event.editMessageEmbeds(WarnServerCommand.performCommand(member, reason, event.getMember())).setActionRows().queue();
+            if (!event.getMessage().getEmbeds().get(0).getFields().isEmpty()) {
+
+                String reason = event.getMessage().getEmbeds().get(0).getFields().get(0).getValue();
+
+                event.editMessageEmbeds(WarnServerCommand.performCommand(member, reason, event.getMember())).setActionRows().queue();
+
+            } else {
+
+                event.editMessageEmbeds(WarnServerCommand.performCommand(member, "", event.getMember())).setActionRows().queue();
+
+            }
 
         } else if (StandardActionRows.proofButton(event, "kick.success", user)) {
 
-            String reason = event.getButton().getId().split("&")[1].replace("reason=", "");
-
             Member member = event.getGuild().getMemberById(event.getMessage().getEmbeds().get(0).getDescription().replace("<", "III").replace(">", "III").replace("@", "").split("III")[1]);
 
-            event.editMessageEmbeds(KickServerCommand.performCommand(member, reason, event.getMember())).setActionRows().queue();
+            if (!event.getMessage().getEmbeds().get(0).getFields().isEmpty()) {
+
+                String reason = event.getMessage().getEmbeds().get(0).getFields().get(0).getValue();
+
+                event.editMessageEmbeds(KickServerCommand.performCommand(member, reason, event.getMember())).setActionRows().queue();
+
+            } else {
+
+                event.editMessageEmbeds(KickServerCommand.performCommand(member, "", event.getMember())).setActionRows().queue();
+
+            }
 
         } else if (StandardActionRows.proofButton(event, "ban.success", user)) {
 
-            String reason = event.getButton().getId().split("&")[1].replace("reason=", "");
-
             Member member = event.getGuild().getMemberById(event.getMessage().getEmbeds().get(0).getDescription().replace("<", "III").replace(">", "III").replace("@", "").split("III")[1]);
 
-            event.editMessageEmbeds(BanServerCommand.performCommand(member, reason, event.getMember())).setActionRows().queue();
+            if (!event.getMessage().getEmbeds().get(0).getFields().isEmpty()) {
+
+                String reason = event.getMessage().getEmbeds().get(0).getFields().get(0).getValue();
+
+                event.editMessageEmbeds(BanServerCommand.performCommand(member, reason, event.getMember())).setActionRows().queue();
+
+            } else {
+
+                event.editMessageEmbeds(BanServerCommand.performCommand(member, "", event.getMember())).setActionRows().queue();
+
+            }
 
         } else if (StandardActionRows.proofButton(event, "tempban.success", user)) {
 

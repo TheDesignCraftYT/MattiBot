@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sqlite.SQLiteException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -108,7 +109,7 @@ public class ServerCommandManager extends ListenerAdapter {
 
             List<TextChannel> whitelistedChannels = MainMethods.getWhitelistedChannels(event.getGuild());
 
-            if (!event.getMember().hasPermission(Permission.ADMINISTRATOR) && !whitelistedChannels.contains(event.getTextChannel())) {
+            if (!event.getMember().hasPermission(Permission.ADMINISTRATOR) && !whitelistedChannels.contains(event.getChannel().asTextChannel())) {
 
                 StringBuilder stringBuilder = new StringBuilder();
 
@@ -194,11 +195,11 @@ public class ServerCommandManager extends ListenerAdapter {
 
         if (event.isFromType(ChannelType.TEXT)) {
 
-            TextChannel textChannel = event.getTextChannel();
-
-            ResultSet prefix = LiteSQL.onQuery("SELECT prefix FROM prefix WHERE guildid = " + event.getGuild().getIdLong());
+            TextChannel textChannel = event.getChannel().asTextChannel();
 
             try {
+
+                ResultSet prefix = LiteSQL.onQuery("SELECT prefix FROM prefix WHERE guildid = " + event.getGuild().getIdLong());
 
                 String prefixString = prefix.getString("prefix");
 
@@ -215,8 +216,6 @@ public class ServerCommandManager extends ListenerAdapter {
                             if (!event.getMember().hasPermission(Permission.ADMINISTRATOR) && !whitelistedChannels.contains(textChannel)) {
 
                                 StringBuilder stringBuilder = new StringBuilder();
-
-                                // whitelistedChannels.forEach(s -> stringBuilder.append("> • <#").append(s).append(">\n"));
 
                                 whitelistedChannels.forEach(textChannel1 -> stringBuilder
                                         .append("> • ")
