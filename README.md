@@ -2,7 +2,9 @@
 Der MattiBot ist ein von `TheDesignCraft#7886` programmierter Discord Bot für den [Matti-Discord](https://discord.gg/SBhtxjgt57).
 
 ## Funktionen
-Eine Liste der Funktionen wird mit dem ersten Release hinzugefügt.
+Hier eine Liste der wichtigsten Funktionen:
+- Whitelist
+- Moderation
 
 ## Testen
 ### Alpha-Versionen
