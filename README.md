@@ -6,6 +6,8 @@ Hier eine Liste der wichtigsten Funktionen:
 - Whitelist
 - Moderation
 
+Führe `/help` in Discord aus, um eine Liste und Hilfe von allen Funktionen zu bekommen.
+
 ## Testen
 ### Alpha-Versionen
 Alpha-Versionen können nur von den Moderatoren des [Matti-Discords](https://discord.gg/SBhtxjgt57) getestet werden.
