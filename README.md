@@ -15,7 +15,7 @@ Hier eine Liste der wichtigsten Funktionen:
 - Whitelist
 - Moderation
 
-Führe `/help` in Discord aus, um eine Liste und Hilfe von allen Funktionen zu bekommen.
+Führe `/help` in Discord aus, um eine Liste und Hilfe von allen Befehlen & Funktionen zu bekommen.
 
 ## Testen
 ### Alpha-Versionen
