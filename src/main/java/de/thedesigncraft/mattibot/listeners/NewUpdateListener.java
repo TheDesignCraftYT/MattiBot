@@ -31,10 +31,7 @@ public class NewUpdateListener extends ListenerAdapter {
             if (titleArgs[0].split("/")[1].startsWith(MainValues.projectName) &&
                     titleArgs[1].equals("New") &&
                     titleArgs[2].equals("release") &&
-                    titleArgs[3].equals("published:") &&
-                    titleArgs[4].split(".")[0].startsWith(Versions.currentVersion().split(".")[0]) &&
-                    titleArgs[4].split(".")[1].startsWith(Versions.currentVersion().split(".")[1]) &&
-                    titleArgs[4].split(".")[2].startsWith(Versions.currentVersion().split(".")[2])) {
+                    titleArgs[3].equals("published:")) {
 
                 EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed("Neue Version: " + Versions.currentVersion(), "Es wurde wieder fleißig am Bot weitergearbeitet und es sind einige neue Funktionen hinzugekommen :sparkles:\n\nEine ausführliche Beschreibung des Updates bekommst du [hier](https://github.com/TheDesignCraftYT/" + MainValues.projectName + "/releases/tag/" + Versions.currentVersion() + ")"));
 
