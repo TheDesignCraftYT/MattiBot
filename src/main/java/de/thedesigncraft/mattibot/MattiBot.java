@@ -89,7 +89,8 @@ public class MattiBot {
         jdaBuilder.enableIntents(
                 GatewayIntent.GUILD_PRESENCES,
                 GatewayIntent.GUILD_MEMBERS,
-                GatewayIntent.GUILD_VOICE_STATES
+                GatewayIntent.GUILD_VOICE_STATES,
+                GatewayIntent.MESSAGE_CONTENT
         );
 
         // Set MemberCachePolicy
