@@ -28,7 +28,7 @@ public class NewUpdateListener extends ListenerAdapter {
 
             String[] titleArgs = event.getMessage().getEmbeds().get(0).getTitle().split(" ");
 
-            if (titleArgs[0].split("/")[1].equals(MainValues.projectName) &&
+            if (titleArgs[0].split("/")[1].startsWith(MainValues.projectName) &&
                     titleArgs[1].equals("New") &&
                     titleArgs[2].equals("release") &&
                     titleArgs[3].equals("published:") &&
