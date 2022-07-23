@@ -160,7 +160,7 @@ public class WarnServerCommand implements ServerCommand {
 
         if (staff.canInteract(member) && !member.isOwner() && !member.equals(member.getGuild().getMemberById(MattiBot.jda.getSelfUser().getIdLong()))) {
 
-            MainMethods.addPunishment(punishment, member);
+            MainMethods.addPunishment(punishment, member.getUser(), member.getGuild());
 
             ServerCommand warnCommand = ServerCommandManager.commandsMap.get("warn");
 

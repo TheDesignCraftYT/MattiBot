@@ -85,11 +85,11 @@ public class BanServerCommand implements ServerCommand {
 
             if (args.length >= 2) {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Ban", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich bannen?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "ban.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Ban", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich bannen?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "ban.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             } else {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Ban", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich bannen?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "ban.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Ban", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich bannen?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "ban.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             }
 
@@ -110,11 +110,11 @@ public class BanServerCommand implements ServerCommand {
 
             if (args.length >= 2) {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Ban", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich bannen?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "ban.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Ban", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich bannen?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "ban.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             } else {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Ban", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich bannen?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "ban.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Ban", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich bannen?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "ban.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             }
 
@@ -160,7 +160,7 @@ public class BanServerCommand implements ServerCommand {
 
         if (staff.canInteract(member) && !member.isOwner() && !member.equals(member.getGuild().getMemberById(MattiBot.jda.getSelfUser().getIdLong()))) {
 
-            MainMethods.addPunishment(punishment, member);
+            MainMethods.addPunishment(punishment, member.getUser(), member.getGuild());
 
             ServerCommand banCommand = ServerCommandManager.commandsMap.get("ban");
 

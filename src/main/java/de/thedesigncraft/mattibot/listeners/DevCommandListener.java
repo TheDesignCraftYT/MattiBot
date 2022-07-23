@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,17 +43,9 @@ public class DevCommandListener extends ListenerAdapter {
 
     private void executeCommand(MessageReceivedEvent event, String command) {
 
-        if (command.startsWith("newUpdate")) {
-
-            newUpdate(event);
-
-        } else if (command.startsWith("calculate")) {
+        if (command.startsWith("calculate")) {
 
             calculate(event);
-
-        } else if (command.startsWith("updateInfos")) {
-
-            newUpdateInfos(event);
 
         } else if (command.startsWith("rebootDatabase")) {
 
@@ -103,113 +94,6 @@ public class DevCommandListener extends ListenerAdapter {
         LiteSQL.connect();
         stringBuilder1.append("Database Connection online.\n");
         reply.editMessageEmbeds(new EmbedBuilder(reply.getEmbeds().get(0)).clearFields().addField("Servers", stringBuilder.toString(), false).addField("Log", "```" + stringBuilder1 + "```", false).build()).queue();
-
-    }
-
-    private void newUpdateInfos(MessageReceivedEvent event) {
-
-        event.getMessage().replyEmbeds(EmbedTemplates.standardEmbed("New Update Command Infos", "```dev.newUpdate [name;beschreibung],[name;beschreibung]```")).queue();
-
-    }
-
-    private void newUpdate(MessageReceivedEvent event) {
-
-        String newFunctionsString = event.getMessage().getContentDisplay().replaceFirst("dev.newUpdate", "").replaceFirst(" ", "");
-
-        ConcurrentHashMap<String, String> newFunctions = new ConcurrentHashMap<>();
-        List<ServerCommand> newCommands = new ArrayList<>();
-
-        ServerCommands.serverCommands().forEach(serverCommand -> {
-
-            if (serverCommand.version().equals(Versions.currentVersion())) {
-
-                newCommands.add(serverCommand);
-
-            }
-
-        });
-
-        if (!newFunctionsString.equals("") && !newFunctionsString.equals(" ")) {
-
-            String[] newFunctionsStringSplitted = newFunctionsString.split(",");
-
-            int i = newFunctionsStringSplitted.length - 1;
-
-            while (i + 1 != 0) {
-
-                String newFunction = newFunctionsStringSplitted[i];
-
-                String[] newFunctionSplitted = newFunction.replace("[", "").replace("]", "").split(";");
-
-                newFunctions.put(newFunctionSplitted[0], newFunctionSplitted[1]);
-
-                i = i - 1;
-
-            }
-
-        }
-
-        EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed("Neue Version: " + Versions.currentVersion(), "Es wurde wieder fleißig am Bot weitergearbeitet und es sind einige neue Funktionen hinzugekommen :sparkles:"));
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        newCommands.forEach(serverCommand -> {
-
-            stringBuilder.append("➤ `");
-
-            if (serverCommand.slashCommand()) {
-
-                stringBuilder.append("/");
-
-            } else {
-
-                stringBuilder.append("III");
-
-            }
-
-            stringBuilder
-                    .append(ServerCommandMethods.getCommandName(serverCommand))
-                    .append("` - ")
-                    .append(serverCommand.description())
-                    .append("\n");
-
-        });
-
-        embedBuilder.addField("Neue Befehle", stringBuilder.toString(), true);
-
-        StringBuilder stringBuilder1 = new StringBuilder();
-
-        newFunctions.forEach((s, s2) -> {
-
-            stringBuilder1
-                    .append("➤ `")
-                    .append(s)
-                    .append("` - ")
-                    .append(s2)
-                    .append("\n");
-
-        });
-
-        if (!stringBuilder1.toString().equals("") && !stringBuilder1.toString().equals(" ")) {
-
-            embedBuilder.addField("Neue Funktionen", stringBuilder1.toString(), true);
-
-        }
-
-        if (newCommands.isEmpty() && newFunctions.isEmpty()) {
-
-            event.getMessage().replyEmbeds(EmbedTemplates.issueEmbed("Es müssen neue Funktionen oder Commands vorhanden sein.", false)).mentionRepliedUser(false).queue();
-
-        } else {
-
-            MainValues.updateChannels().forEach(textChannel -> {
-
-                textChannel.sendMessageEmbeds(embedBuilder.build()).queue();
-                event.getMessage().reply("Folgende UpdateNachricht wurde erfolgreich an alle festgelegten Channel verschickt:").setEmbeds(embedBuilder.build()).mentionRepliedUser(false).queue();
-
-            });
-
-        }
 
     }
 

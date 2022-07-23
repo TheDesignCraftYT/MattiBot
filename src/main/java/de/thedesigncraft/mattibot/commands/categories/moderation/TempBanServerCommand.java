@@ -263,7 +263,7 @@ public class TempBanServerCommand implements ServerCommand {
 
             if (staff.canInteract(member) && !member.isOwner() && !member.equals(member.getGuild().getMemberById(MattiBot.jda.getSelfUser().getIdLong()))) {
 
-                MainMethods.addPunishment(punishment, member);
+                MainMethods.addPunishment(punishment, member.getUser(), member.getGuild());
 
                 ServerCommand tempbanCommand = ServerCommandManager.commandsMap.get("tempban");
 
@@ -381,7 +381,7 @@ public class TempBanServerCommand implements ServerCommand {
                                             message.getAuthor().equals(MattiBot.jda.getSelfUser()) &&
                                                     !message.getEmbeds().isEmpty() &&
                                                     message.getEmbeds().get(0).getTitle().endsWith("TempBan") &&
-                                                    !message.getEmbeds().get(0).getDescription().startsWith("~~")
+                                                    !message.getEmbeds().get(0).getDescription().endsWith("```")
                                     ).collect(Collectors.toList())).join().forEach(message ->
 
                                             message.getEmbeds().get(0).getFields().forEach(field -> {

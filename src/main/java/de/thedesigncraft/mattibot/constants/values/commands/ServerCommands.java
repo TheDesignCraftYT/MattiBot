@@ -3,12 +3,8 @@ package de.thedesigncraft.mattibot.constants.values.commands;
 import de.thedesigncraft.mattibot.commands.categories.misc.PingServerCommand;
 import de.thedesigncraft.mattibot.commands.categories.configuration.PrefixServerCommand;
 import de.thedesigncraft.mattibot.commands.categories.misc.UserinfoServerCommand;
-import de.thedesigncraft.mattibot.commands.categories.moderation.BanServerCommand;
-import de.thedesigncraft.mattibot.commands.categories.moderation.KickServerCommand;
-import de.thedesigncraft.mattibot.commands.categories.moderation.TempBanServerCommand;
-import de.thedesigncraft.mattibot.commands.categories.moderation.WarnServerCommand;
+import de.thedesigncraft.mattibot.commands.categories.moderation.*;
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
-import de.thedesigncraft.mattibot.commands.categories.moderation.ClearServerCommand;
 import de.thedesigncraft.mattibot.functions.help.HelpServerCommand;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistServerCommand;
 
@@ -32,6 +28,7 @@ public interface ServerCommands {
         returnList.add(new BanServerCommand());
         returnList.add(new TempBanServerCommand());
         returnList.add(new ClearServerCommand());
+        returnList.add(new UnbanServerCommand());
 
         return returnList;
 

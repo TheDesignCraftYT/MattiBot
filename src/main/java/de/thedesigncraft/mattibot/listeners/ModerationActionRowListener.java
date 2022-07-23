@@ -1,9 +1,6 @@
 package de.thedesigncraft.mattibot.listeners;
 
-import de.thedesigncraft.mattibot.commands.categories.moderation.BanServerCommand;
-import de.thedesigncraft.mattibot.commands.categories.moderation.KickServerCommand;
-import de.thedesigncraft.mattibot.commands.categories.moderation.TempBanServerCommand;
-import de.thedesigncraft.mattibot.commands.categories.moderation.WarnServerCommand;
+import de.thedesigncraft.mattibot.commands.categories.moderation.*;
 import de.thedesigncraft.mattibot.constants.methods.StandardActionRows;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
@@ -89,6 +86,22 @@ public class ModerationActionRowListener extends ListenerAdapter {
 
             }
             
+        } else if (StandardActionRows.proofButton(event, "unban.success", user)) {
+
+            String memberString = event.getButton().getId().split("&")[1].replace("user=", "");
+
+            if (!event.getMessage().getEmbeds().get(0).getFields().isEmpty()) {
+
+                String reason = event.getMessage().getEmbeds().get(0).getFields().get(0).getValue();
+
+                event.editMessageEmbeds(UnbanServerCommand.performCommand(memberString, event.getGuild(), reason, event.getMember())).setActionRows().queue();
+
+            } else {
+
+                event.editMessageEmbeds(UnbanServerCommand.performCommand(memberString, event.getGuild(), "", event.getMember())).setActionRows().queue();
+
+            }
+
         }
 
     }

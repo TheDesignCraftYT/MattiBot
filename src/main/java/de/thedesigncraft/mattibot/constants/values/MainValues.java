@@ -16,15 +16,18 @@ public interface MainValues {
     String activityText = "/help | %reachableUsers erreichbare Nutzer";
     String standardcommandPrefix = "M.";
     User owner = MattiBot.jda.retrieveUserById(810769870521106464L).complete();
+    String projectName = "MattiBot";
 
-    static List<MessageChannel> updateChannels() {
+    static List<TextChannel> updateChannels() {
 
-        List<MessageChannel> returnList = new ArrayList<>();
+        List<TextChannel> returnList = new ArrayList<>();
 
         returnList.add(MattiBot.jda.getGuildById(995733324884623410L).getTextChannelById(997799689858601040L));
 
         return returnList;
 
     }
+
+    TextChannel githubLog = MattiBot.jda.getGuildById(995733324884623410L).getTextChannelById(999682448474513438L);
 
 }

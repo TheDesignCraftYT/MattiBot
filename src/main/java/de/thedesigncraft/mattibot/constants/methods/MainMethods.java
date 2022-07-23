@@ -133,18 +133,18 @@ public interface MainMethods {
 
     }
 
-    static void addPunishment(String punishment, Member member) {
+    static void addPunishment(String punishment, User user, Guild guild) {
 
-        if (getPunishments(member.getUser(), member.getGuild(), "all").isEmpty()) {
+        if (getPunishments(user, guild, "all").isEmpty()) {
 
-            LiteSQL.onUpdate("INSERT INTO punishments(guildid, userid, punishments) VALUES(" + member.getGuild().getIdLong() + ", " + member.getIdLong() + ", '" + punishment + "')");
+            LiteSQL.onUpdate("INSERT INTO punishments(guildid, userid, punishments) VALUES(" + guild.getIdLong() + ", " + user.getIdLong() + ", '" + punishment + "')");
 
         } else {
 
-            ResultSet punishmentsSet = LiteSQL.onQuery("SELECT punishments FROM punishments WHERE guildid = " + member.getGuild().getIdLong() + " AND userid = " + member.getIdLong());
+            ResultSet punishmentsSet = LiteSQL.onQuery("SELECT punishments FROM punishments WHERE guildid = " + guild.getIdLong() + " AND userid = " + user.getIdLong());
 
             try {
-                LiteSQL.onUpdate("UPDATE punishments SET punishments = '" + punishmentsSet.getString("punishments") + punishment + "' WHERE guildid = " + member.getGuild().getIdLong() + " AND userid = " + member.getIdLong());
+                LiteSQL.onUpdate("UPDATE punishments SET punishments = '" + punishmentsSet.getString("punishments") + punishment + "' WHERE guildid = " + guild.getIdLong() + " AND userid = " + user.getIdLong());
             } catch (SQLException e) {
                 Logger logger = LoggerFactory.getLogger(MainMethods.class);
                 logger.error("Unerwarteter Fehler");
