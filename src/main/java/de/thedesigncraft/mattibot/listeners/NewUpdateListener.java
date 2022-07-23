@@ -8,7 +8,6 @@ import de.thedesigncraft.mattibot.constants.values.UpdateFunctions;
 import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Webhook;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +19,9 @@ public class NewUpdateListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+
+        if (!event.isFromGuild())
+            return;
 
         if (event.getGuild().getIdLong() == MainValues.githubLog.getGuild().getIdLong() &&
                 event.getChannel().asTextChannel().getIdLong() == MainValues.githubLog.getIdLong() &&
@@ -113,7 +115,7 @@ public class NewUpdateListener extends ListenerAdapter {
                         .append(textChannel.getGuild().getName())
                         .append(")\n"));
 
-                MainValues.owner.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessageEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed("Neues Update", "Folgendes UpdateEmbed wurde an alle festgelegten Channel verschickt:")).addField("UpdateChannel", "```" + stringBuilder + "```", false).build()).queue());
+                MainValues.owner.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessageEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed("Neues Update", "Folgendes UpdateEmbed wurde an alle festgelegten Channel verschickt:")).addField("UpdateChannel", "```" + stringBuilder + "```", false).build(), embedBuilder.build()).queue());
 
             }
 
