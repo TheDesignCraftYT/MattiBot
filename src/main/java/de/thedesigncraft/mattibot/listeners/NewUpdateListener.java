@@ -35,7 +35,7 @@ public class NewUpdateListener extends ListenerAdapter {
                     titleArgs[2].equals("release") &&
                     titleArgs[3].equals("published:")) {
 
-                EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed("Neue Version: " + Versions.currentVersion(), "Es wurde wieder fleißig am Bot weitergearbeitet und es sind einige neue Funktionen hinzugekommen :sparkles:\n\nEine ausführliche Beschreibung des Updates bekommst du [hier](https://github.com/TheDesignCraftYT/" + MainValues.projectName + "/releases/tag/" + Versions.currentVersion() + ")"));
+                EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed("Neue Version: " + Versions.currentVersion(), "Es wurde wieder fleißig am Bot weitergearbeitet und es sind einige neue Funktionen hinzugekommen :sparkles:\n\nEine ausführliche Beschreibung des Updates bekommst du [hier](https://github.com/TheDesignCraftYT/" + MainValues.projectName + "/releases/tag/" + Versions.currentVersion() + ")."));
 
                 List<ServerCommand> newCommands = new ArrayList<>();
                 List<String[]> newFunctions = new ArrayList<>();
