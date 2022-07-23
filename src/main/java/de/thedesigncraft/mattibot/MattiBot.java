@@ -9,10 +9,7 @@ import de.thedesigncraft.mattibot.commands.categories.moderation.ClearServerComm
 import de.thedesigncraft.mattibot.functions.help.HelpActionRowListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistActionRowListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistMessageListener;
-import de.thedesigncraft.mattibot.listeners.DevCommandListener;
-import de.thedesigncraft.mattibot.listeners.GuildJoinListener;
-import de.thedesigncraft.mattibot.listeners.ModerationActionRowListener;
-import de.thedesigncraft.mattibot.listeners.StandardActionRowListener;
+import de.thedesigncraft.mattibot.listeners.*;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
 import de.thedesigncraft.mattibot.manage.SQLManager;
 import de.thedesigncraft.mattibot.manage.ServerCommandManager;
@@ -81,7 +78,8 @@ public class MattiBot {
 
                 new GuildJoinListener(),
                 new WhitelistMessageListener(),
-                new DevCommandListener()
+                new DevCommandListener(),
+                new NewUpdateListener()
 
         );
 
