@@ -1,0 +1,42 @@
+name: Feature Request
+description: Eine Idee für den Bot.
+title: "[FEATURE REQUEST] <title>"
+labels: [Erweiterung]
+body:
+- type: checkboxes
+  attributes:
+    label: Existiert schon ein Issue für diesen Vorschlag?
+    description: Bitte schaue nach, ob dieser Vorschlag schonmal vorgebracht wurde, bevor du ihn vorbringst.
+    options:
+    - label: Ich habe die existierenden Issues durchgeschaut und nichts gefunden.
+      required: true
+- type: textarea
+  attributes:
+    label: Beschreibe deinen Vorschlag
+    description: Eine genaue und ausführliche Beschreibung deines Vorschlags.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Wieso sollten wir das ändern?
+    description: Eine genaue und ausführliche Beschreibung, was deiner Meinung nach den Vorschlag so wichtig macht, dass wir ihn mit einbauen.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Wo soll sich etwas ändern?
+    description: Eine genaue und ausführliche Beschreibung, wie, wann, und an welcher Stelle sich etwas ändern soll.
+    placeholder: |
+      1. In dieser Umgebung...
+      2. Mit diesen Einstellungen...
+      3. Führe '...' aus...
+      4. Dort ist der Fehler...
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Sonst noch irgendwas?
+    description: |
+      Alles mögliche, was du uns noch mitgeben möchtest.
+  validations:
+    required: false
