@@ -95,7 +95,6 @@ public class MattiBot {
         jdaBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
 
         jda = jdaBuilder.build();
-        // System.out.println(MainValues.botName + ": Online");
 
         org.slf4j.Logger logger = LoggerFactory.getLogger(MattiBot.class);
         logger.info("StatusUpdate: Online");

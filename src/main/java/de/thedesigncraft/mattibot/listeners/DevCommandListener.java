@@ -1,12 +1,9 @@
 package de.thedesigncraft.mattibot.listeners;
 
 import de.thedesigncraft.mattibot.MattiBot;
-import de.thedesigncraft.mattibot.commands.types.ServerCommand;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
 import de.thedesigncraft.mattibot.constants.methods.MainMethods;
-import de.thedesigncraft.mattibot.constants.methods.ServerCommandMethods;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
-import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -17,9 +14,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class DevCommandListener extends ListenerAdapter {
 
@@ -51,11 +45,25 @@ public class DevCommandListener extends ListenerAdapter {
 
             rebootDatabase(event);
 
+        } else if (command.startsWith("sendNewUpdate")) {
+
+            sendNewUpdate(event);
+
         } else {
 
             event.getMessage().replyEmbeds(EmbedTemplates.issueEmbed("Das ist kein registrierter DevCommand.", false)).queue();
 
         }
+
+    }
+
+    private void sendNewUpdate(MessageReceivedEvent event) {
+
+        String arg = event.getMessage().getContentDisplay().split(" ")[1];
+
+        String version = Versions.versions().get(arg);
+
+        NewUpdateListener.sendNewUpdate(version);
 
     }
 
