@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Schlage eine Idee für diesen Bot vor
-title: "[FEATURE REQUEST] Titel"
+title: "[FEATURE REQUEST]"
 labels: Erweiterung
 assignees: TheDesignCraftYT
 
