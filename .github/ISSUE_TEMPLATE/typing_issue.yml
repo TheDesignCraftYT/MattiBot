@@ -1,0 +1,42 @@
+name: Typing Issue
+description: Ein Schreib- / Formatierungsfehler o.Ä.
+title: "[TYPING] <title>"
+labels: [Schreibfehler]
+body:
+- type: checkboxes
+  attributes:
+    label: Existiert schon ein Issue für diesen Fehler?
+    description: Bitte schaue nach, ob dieser Fehler schon reportet wurde, bevor du ihn reportest.
+    options:
+    - label: Ich habe die existierenden Issues durchgeschaut und nichts gefunden.
+      required: true
+- type: textarea
+  attributes:
+    label: Beschreibe den Fehler
+    description: Eine genaue und ausführliche Beschreibung des Fehlers.
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Erwartetes Verhalten
+    description: Eine genaue und ausführliche Beschreibung, was deiner Meinung nach an dieser Stelle eigentlich stehen sollte.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Schritte zum Reproduzieren
+    description: Eine genaue und ausführliche Beschreibung, wie, wann, und an welcher Stelle dieser Fehler steht.
+    placeholder: |
+      1. In dieser Umgebung...
+      2. Mit diesen Einstellungen...
+      3. Führe '...' aus...
+      4. Dort ist der Fehler...
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Sonst noch irgendwas?
+    description: |
+      Alles mögliche, was du uns noch mitgeben möchtest.
+  validations:
+    required: false
