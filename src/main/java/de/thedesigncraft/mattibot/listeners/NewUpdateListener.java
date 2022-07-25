@@ -35,7 +35,7 @@ public class NewUpdateListener extends ListenerAdapter {
                     titleArgs[2].equals("release") &&
                     titleArgs[3].equals("published:")) {
 
-                sendNewUpdate(Versions.currentVersion());
+                sendNewUpdate(Versions.currentVersion(), true);
 
             }
 
@@ -43,7 +43,7 @@ public class NewUpdateListener extends ListenerAdapter {
 
     }
 
-    public static void sendNewUpdate(String version) {
+    public static void sendNewUpdate(String version, boolean sendToAllChannels) {
 
         EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed("Neue Version: " + version, "Es wurde wieder fleißig am Bot weitergearbeitet und es sind einige neue Funktionen hinzugekommen :sparkles:\n\nEine ausführliche Beschreibung des Updates bekommst du [hier](https://github.com/TheDesignCraftYT/" + MainValues.projectName + "/releases/tag/" + version + ")."));
 
@@ -114,18 +114,26 @@ public class NewUpdateListener extends ListenerAdapter {
 
         }
 
-        MainValues.updateChannels().forEach(messageChannel -> messageChannel.sendMessageEmbeds(embedBuilder.build()).queue());
+        if (sendToAllChannels) {
 
-        StringBuilder stringBuilder = new StringBuilder();
+            MainValues.updateChannels().forEach(messageChannel -> messageChannel.sendMessageEmbeds(embedBuilder.build()).queue());
 
-        MainValues.updateChannels().forEach(textChannel -> stringBuilder
-                .append("➤ ")
-                .append(textChannel.getName())
-                .append(" (")
-                .append(textChannel.getGuild().getName())
-                .append(")\n"));
+            StringBuilder stringBuilder = new StringBuilder();
 
-        MainValues.owner.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessageEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed("Neues Update", "Folgendes UpdateEmbed wurde an alle festgelegten Channel verschickt:")).addField("UpdateChannel", "```" + stringBuilder + "```", false).build(), embedBuilder.build()).queue());
+            MainValues.updateChannels().forEach(textChannel -> stringBuilder
+                    .append("➤ ")
+                    .append(textChannel.getName())
+                    .append(" (")
+                    .append(textChannel.getGuild().getName())
+                    .append(")\n"));
+
+            MainValues.owner.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessageEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed("Neues Update", "Folgendes UpdateEmbed wurde an alle festgelegten Channel verschickt:")).addField("UpdateChannel", "```" + stringBuilder + "```", false).build(), embedBuilder.build()).queue());
+
+        } else {
+
+            MainValues.owner.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessageEmbeds(EmbedTemplates.standardEmbed("NewVersionTest", "Folgendes Embed wurde nur zum testen an dich verschickt."), embedBuilder.build()).queue());
+
+        }
 
     }
 

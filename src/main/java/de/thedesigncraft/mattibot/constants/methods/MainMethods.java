@@ -97,21 +97,31 @@ public interface MainMethods {
 
     }
 
-    static List<String> getPunishments(User user, Guild guild, String punishmentType) {
+    static List<String[]> getPunishments(User user, Guild guild, String punishmentType) {
 
         ResultSet punishments = LiteSQL.onQuery("SELECT punishments FROM punishments WHERE guildid = " + guild.getIdLong() + " AND userid = " + user.getIdLong());
 
         try {
-            List<String> punishmentsList = Arrays.stream(punishments.getString("punishments").replace(">", "").split("<")).toList();
 
-            List<String> returnList = new ArrayList<>();
+            String[] punishmentsString = punishments.getString("punishments").replace("<", "").split(">");
+
+            List<String[]> allPunishments = new ArrayList<String[]>();
+
+            List<String> al = Arrays.asList(punishmentsString);
+
+            al.forEach(s -> allPunishments.add(s.replace("(", "").replace(")", "III").split("III")));
+
+            List<String[]> returnList = new ArrayList<>();
 
             if (punishmentType.equals("warn") || punishmentType.equals("kick") || punishmentType.equals("ban") || punishmentType.equals("tempban") || punishmentType.equals("unban") || punishmentType.equals("unwarn") || punishmentType.equals("timeout") || punishmentType.equals("removetimeout")) {
 
-                punishmentsList.forEach(s -> {
+                allPunishments.forEach(s -> {
 
-                    if (s.startsWith("(" + punishmentType + ")"))
+                    if (s[0].equals(punishmentType)) {
+
                         returnList.add(s);
+
+                    }
 
                 });
 
@@ -119,7 +129,7 @@ public interface MainMethods {
 
             } else if (punishmentType.equals("all")) {
 
-                return punishmentsList;
+                return allPunishments;
 
             } else {
 
@@ -154,10 +164,7 @@ public interface MainMethods {
 
     }
 
-    static String getToken() {
-
-        Logger logger = LoggerFactory.getLogger(Versions.class);
-        logger.info("BotVersion: '" + Versions.currentVersion() + "'");
+    static String[] getToken() {
 
         try {
 
@@ -165,20 +172,17 @@ public interface MainMethods {
 
             if(versionType.equals("alpha")) {
 
-                logger.info("Starting 'Alpha' Bot");
-                return TOKEN.alphaToken;
+                return new String[]{"Alpha", TOKEN.alphaToken};
 
             } else if (versionType.equals("beta")) {
 
-                logger.info("Starting 'Beta' Bot");
-                return TOKEN.betaToken;
+                return new String[]{"Beta", TOKEN.betaToken};
 
             }
 
         } catch (ArrayIndexOutOfBoundsException e) {
 
-            logger.info("Starting 'Main' Bot");
-            return TOKEN.releaseToken;
+            return new String[]{"Release", TOKEN.releaseToken};
 
         }
 

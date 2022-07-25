@@ -3,6 +3,7 @@ package de.thedesigncraft.mattibot.constants.values.commands;
 import de.thedesigncraft.mattibot.commands.categories.misc.PingServerCommand;
 import de.thedesigncraft.mattibot.commands.categories.configuration.PrefixServerCommand;
 import de.thedesigncraft.mattibot.commands.categories.misc.UserinfoServerCommand;
+import de.thedesigncraft.mattibot.commands.categories.misc.VersionServerCommand;
 import de.thedesigncraft.mattibot.commands.categories.moderation.*;
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
 import de.thedesigncraft.mattibot.functions.help.HelpServerCommand;
@@ -29,6 +30,7 @@ public interface ServerCommands {
         returnList.add(new TempBanServerCommand());
         returnList.add(new ClearServerCommand());
         returnList.add(new UnbanServerCommand());
+        returnList.add(new VersionServerCommand());
 
         return returnList;
 

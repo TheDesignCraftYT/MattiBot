@@ -179,7 +179,7 @@ public class KickServerCommand implements ServerCommand {
             } catch (UnsupportedOperationException ignored) {
             }
 
-            member.kick(reason).queue();
+            member.kick(reason).queueAfter(1, TimeUnit.SECONDS);
 
             EmbedBuilder embedBuilder1 = new EmbedBuilder(EmbedTemplates.standardEmbed(kickCommand.commandEmoji().getName() + " Kick", ""));
 

@@ -288,7 +288,7 @@ public class TempBanServerCommand implements ServerCommand {
 
                 try {
 
-                    member.ban(0, reason).queue();
+                    member.ban(0, reason).queueAfter(1, TimeUnit.SECONDS);
 
                 } catch (HierarchyException e) {
 
@@ -339,26 +339,34 @@ public class TempBanServerCommand implements ServerCommand {
 
             bannedUsers.forEach(user -> {
 
-                List<String> list = Arrays.stream(MainMethods.getPunishments(user, guild, "tempban").toString().replace("[", "").replace("]", "").split(",")).toList();
+                List<String[]> tempbans = MainMethods.getPunishments(user, guild, "tempban");
+                List<String[]> userBans = MainMethods.getPunishments(user, guild, "ban");
 
                 List<Long> endTimestamps = new ArrayList<>();
 
-                list.forEach(s -> {
+                assert tempbans != null;
+                tempbans.forEach(s -> {
 
-                    List<String> arguments = Arrays.stream(s.replace(")", "").replace("(", "<").split("<")).toList();
+                    long endTimestamp = Long.parseLong(s[2]);
 
-                    try {
+                    long latestBanTimestamp = Long.parseLong(userBans.get(userBans.size()-1)[1]);
 
-                        long endTimestamp = Long.parseLong(arguments.get(3));
+                    if (new Date(latestBanTimestamp * 1000L).before(new Date(endTimestamp * 1000L))) {
 
                         endTimestamps.add(endTimestamp);
 
-                    } catch (ArrayIndexOutOfBoundsException ignored) {
                     }
 
                 });
 
                 List<Boolean> ifTime = new ArrayList<>();
+
+                if (endTimestamps.isEmpty()) {
+
+                    return;
+
+                }
+
 
                 endTimestamps.forEach(aLong -> {
 

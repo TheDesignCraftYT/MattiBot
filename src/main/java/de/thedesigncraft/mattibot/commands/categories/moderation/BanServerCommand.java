@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
@@ -177,11 +178,11 @@ public class BanServerCommand implements ServerCommand {
 
                 member.getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessageEmbeds(embedBuilder.build()).queue());
 
-            } catch (UnsupportedOperationException ignored) {
+            } catch (UnsupportedOperationException | ErrorResponseException ignored) {
 
             }
 
-            member.ban(0, reason).queue();
+            member.ban(0, reason).queueAfter(1, TimeUnit.SECONDS);
 
             EmbedBuilder embedBuilder1 = new EmbedBuilder(EmbedTemplates.standardEmbed(banCommand.commandEmoji().getName() + " Ban", ""));
 

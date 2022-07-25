@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
+import java.sql.Time;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -157,18 +158,26 @@ public class UnbanServerCommand implements ServerCommand {
         List<String> memberStringType = new ArrayList<>();
 
         try {
-            Integer.parseInt(memberString.split("#")[1]);
+            Long.parseLong(memberString.split("#")[1]);
 
             memberStringType.add("tag");
 
         } catch (NumberFormatException | IndexOutOfBoundsException ignored) {
         }
 
-        if (memberStringType.isEmpty()) {
+        try {
 
-            MattiBot.jda.retrieveUserById(memberString).queue();
+            if (memberStringType.isEmpty()) {
 
-            memberStringType.add("id");
+                MattiBot.jda.retrieveUserById(memberString).queue();
+
+                memberStringType.add("id");
+
+            }
+
+        } catch (NumberFormatException e) {
+
+            return EmbedTemplates.issueEmbed("Das ist kein User.", false);
 
         }
 
@@ -208,6 +217,16 @@ public class UnbanServerCommand implements ServerCommand {
 
         }
 
+        Date date = Date.from(Instant.now().plusSeconds(1));
+
+        int i = 0;
+
+        while (date.after(Date.from(Instant.now()))) {
+
+            i = i + 1;
+
+        }
+
         User user = userList.get(0);
 
         String punishment = "<(unban)(" + Date.from(Instant.now()).getTime() / 1000L + ")(" + reason + ")>";
@@ -223,11 +242,11 @@ public class UnbanServerCommand implements ServerCommand {
                     .thenApply(list -> list.stream().filter(message ->
                             message.getAuthor().equals(MattiBot.jda.getSelfUser()) &&
                                     !message.getEmbeds().isEmpty() &&
-                                    message.getEmbeds().get(0).getTitle().endsWith("Unban") &&
+                                    message.getEmbeds().get(0).getTitle().endsWith("Ban") &&
                                     !message.getEmbeds().get(0).getDescription().endsWith("```")
                     ).collect(Collectors.toList())).join();
 
-            Message message = messages.get(messages.size()-1);
+            Message message = messages.get(0);
 
             message.editMessageEmbeds(new EmbedBuilder(message.getEmbeds().get(0)).appendDescription("\n\n```Du wurdest entbannt von '" + staff.getUser().getAsTag() + "'.```").build()).queue();
 
@@ -235,7 +254,7 @@ public class UnbanServerCommand implements ServerCommand {
 
         ServerCommand unbanCommand = ServerCommandManager.commandsMap.get("unban");
 
-        EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed(unbanCommand.commandEmoji().getName() + " Unban", ""));
+        EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed(unbanCommand.commandEmoji().getName() + " Ban", ""));
 
         embedBuilder.addField("Entbannt:", "```" + user.getAsTag() + "```", true);
 

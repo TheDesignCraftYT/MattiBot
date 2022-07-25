@@ -6,6 +6,7 @@ import de.thedesigncraft.mattibot.constants.methods.ServerCommandMethods;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
 import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
 import de.thedesigncraft.mattibot.commands.categories.moderation.ClearServerCommand;
+import de.thedesigncraft.mattibot.constants.values.commands.Versions;
 import de.thedesigncraft.mattibot.functions.help.HelpActionRowListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistActionRowListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistMessageListener;
@@ -52,7 +53,10 @@ public class MattiBot {
         LiteSQL.connect();
         SQLManager.onCreate();
 
-        JDABuilder jdaBuilder = JDABuilder.createDefault(MainMethods.getToken());
+        JDABuilder jdaBuilder = JDABuilder.createDefault(MainMethods.getToken()[1]);
+        Logger logger = LoggerFactory.getLogger(Versions.class);
+        logger.info("BotVersion: '" + Versions.currentVersion() + "'");
+        logger.info("Starting '" + MainMethods.getToken()[0] + "' Bot.");
         jdaBuilder.setStatus(OnlineStatus.IDLE);
         jdaBuilder.setActivity(Activity.playing("Bot startet..."));
 
@@ -96,8 +100,8 @@ public class MattiBot {
 
         jda = jdaBuilder.build();
 
-        org.slf4j.Logger logger = LoggerFactory.getLogger(MattiBot.class);
-        logger.info("StatusUpdate: Online");
+        Logger logger1 = LoggerFactory.getLogger(MattiBot.class);
+        logger1.info("StatusUpdate: Online");
 
         jda.addEventListener(serverCmdMan = new ServerCommandManager());
 

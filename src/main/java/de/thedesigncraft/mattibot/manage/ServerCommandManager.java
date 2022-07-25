@@ -148,7 +148,7 @@ public class ServerCommandManager extends ListenerAdapter {
                                 .append(permission.getName())
                                 .append("\n"));
 
-                        event.replyEmbeds(EmbedTemplates.issueEmbed("Du hast nicht alle nötigen Berechtigungen für diesen Befehl.\n>Dir fehlen folgende Berechtigungen:\n\n" + stringBuilder, false)).setEphemeral(true).queue();
+                        event.replyEmbeds(EmbedTemplates.issueEmbed("Du hast nicht alle nötigen Berechtigungen für diesen Befehl.\n> Dir fehlen folgende Berechtigungen:\n\n" + stringBuilder, false)).setEphemeral(true).queue();
 
                     }
 

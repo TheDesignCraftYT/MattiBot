@@ -59,11 +59,19 @@ public class DevCommandListener extends ListenerAdapter {
 
     private void sendNewUpdate(MessageReceivedEvent event) {
 
-        String arg = event.getMessage().getContentDisplay().split(" ")[1];
+        try {
 
-        String version = Versions.versions().get(arg);
+            String arg = event.getMessage().getContentDisplay().split(" ")[1];
 
-        NewUpdateListener.sendNewUpdate(version);
+            String version = Versions.versions().get(arg);
+
+            NewUpdateListener.sendNewUpdate(version, false);
+
+        } catch (ArrayIndexOutOfBoundsException e) {
+
+            NewUpdateListener.sendNewUpdate(Versions.currentVersion(), false);
+
+        }
 
     }
 

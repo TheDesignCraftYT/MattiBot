@@ -26,6 +26,12 @@ public interface UpdateFunctions {
         returnList.add(new String[]{Versions.versions().get("v100a4"), "UpdateNachrichten", "Die Update-Nachrichten wurden überarbeitet und komplett automatisiert."});
         returnList.add(new String[]{Versions.versions().get("v100a4"), "/ban", "Bugs gefixt."});
 
+        // v1.0.0-alpha.5
+        returnList.add(new String[]{Versions.versions().get("v100a5"), "/ban | /tempban", "Bugs gefixt."});
+        returnList.add(new String[]{Versions.versions().get("v100a5"), "/unban", "Bugs gefixt."});
+        returnList.add(new String[]{Versions.versions().get("v100a5"), "/kick", "Bugs gefixt."});
+        returnList.add(new String[]{Versions.versions().get("v100a5"), "/tempban", "Bugs gefixt."});
+
         return returnList;
 
     }
