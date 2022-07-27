@@ -1,11 +1,12 @@
 package de.thedesigncraft.mattibot.listeners;
 
-import de.thedesigncraft.mattibot.commands.types.ServerCommand;
+import de.thedesigncraft.mattibot.constants.methods.CommandMethods;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
-import de.thedesigncraft.mattibot.constants.methods.ServerCommandMethods;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
 import de.thedesigncraft.mattibot.constants.values.UpdateFunctions;
+import de.thedesigncraft.mattibot.constants.values.commands.MessageContextMenus;
 import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
+import de.thedesigncraft.mattibot.constants.values.commands.UserContextMenus;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -47,16 +48,38 @@ public class NewUpdateListener extends ListenerAdapter {
 
         EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed("Neue Version: " + version, "Es wurde wieder fleißig am Bot weitergearbeitet und es sind einige neue Funktionen hinzugekommen :sparkles:\n\nEine ausführliche Beschreibung des Updates bekommst du [hier](https://github.com/TheDesignCraftYT/" + MainValues.projectName + "/releases/tag/" + version + ")."));
 
-        List<ServerCommand> newCommands = new ArrayList<>();
+        List<String[]> newCommands = new ArrayList<>();
         List<String[]> newFunctions = new ArrayList<>();
 
         ServerCommands.serverCommands().forEach(serverCommand -> {
 
             if (serverCommand.version().equals(version)) {
 
-                newCommands.add(serverCommand);
+                if (serverCommand.slashCommand()) {
+
+                    newCommands.add(new String[]{"/", CommandMethods.getServerCommandName(serverCommand), serverCommand.description()});
+
+                } else {
+
+                    newCommands.add(new String[]{MainValues.standardcommandPrefix, CommandMethods.getServerCommandName(serverCommand), serverCommand.description()});
+
+                }
 
             }
+
+        });
+
+        UserContextMenus.userContextMenus().forEach(userContextMenu -> {
+
+            if (userContextMenu.version().equals(version))
+                newCommands.add(new String[]{"USER/", CommandMethods.getUserContextMenuName(userContextMenu), userContextMenu.description()});
+
+        });
+
+        MessageContextMenus.messageContextMenus().forEach(messageContextMenu -> {
+
+            if (messageContextMenu.version().equals(version))
+                newCommands.add(new String[]{"MESSAGE/", CommandMethods.getMessageContextMenuName(messageContextMenu), messageContextMenu.description()});
 
         });
 
@@ -74,27 +97,13 @@ public class NewUpdateListener extends ListenerAdapter {
 
             StringBuilder stringBuilder = new StringBuilder();
 
-            newCommands.forEach(serverCommand -> {
-
-                stringBuilder.append("➤ `");
-
-                if (serverCommand.slashCommand()) {
-
-                    stringBuilder.append("/");
-
-                } else {
-
-                    stringBuilder.append(MainValues.standardcommandPrefix);
-
-                }
-
-                stringBuilder
-                        .append(ServerCommandMethods.getCommandName(serverCommand))
-                        .append("` - ")
-                        .append(serverCommand.description())
-                        .append("\n");
-
-            });
+            newCommands.forEach(strings -> stringBuilder
+                    .append("➤ `")
+                    .append(strings[0])
+                    .append(strings[1])
+                    .append("` - ")
+                    .append(strings[2])
+                    .append("\n"));
 
             embedBuilder.addField("Neue Befehle", stringBuilder.toString(), true);
 

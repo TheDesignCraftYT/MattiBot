@@ -2,10 +2,14 @@ package de.thedesigncraft.mattibot.functions.help.methods;
 
 import de.thedesigncraft.mattibot.MattiBot;
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
+import de.thedesigncraft.mattibot.constants.methods.CommandMethods;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
-import de.thedesigncraft.mattibot.constants.methods.ServerCommandMethods;
 import de.thedesigncraft.mattibot.constants.values.EmbedValues;
+import de.thedesigncraft.mattibot.constants.values.commands.MessageContextMenus;
 import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
+import de.thedesigncraft.mattibot.constants.values.commands.UserContextMenus;
+import de.thedesigncraft.mattibot.contextmenus.types.MessageContextMenu;
+import de.thedesigncraft.mattibot.contextmenus.types.UserContextMenu;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
 import de.thedesigncraft.mattibot.manage.ServerCommandManager;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -26,22 +30,36 @@ public interface HelpEmbeds {
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
-        List<ServerCommand> categoryCommands = new ArrayList<>();
+        List<ServerCommand> categorySlashCommands = new ArrayList<>();
+        List<UserContextMenu> categoryUserCommands = new ArrayList<>();
+        List<MessageContextMenu> categoryMessageCommands = new ArrayList<>();
+
         ServerCommands.serverCommands().forEach(serverCommand -> {
 
-            if (serverCommand.category().equals(category)) {
-
-                categoryCommands.add(serverCommand);
-
-            }
+            if (serverCommand.category().equals(category))
+                categorySlashCommands.add(serverCommand);
 
         });
 
-        categoryCommands.forEach(serverCommand -> {
+        UserContextMenus.userContextMenus().forEach(userContextMenu -> {
+
+            if (userContextMenu.category().equals(category))
+                categoryUserCommands.add(userContextMenu);
+
+        });
+
+        MessageContextMenus.messageContextMenus().forEach(messageContextMenu -> {
+
+            if (messageContextMenu.category().equals(category))
+                categoryMessageCommands.add(messageContextMenu);
+
+        });
+
+        categorySlashCommands.forEach(serverCommand -> {
 
             if (serverCommand.slashCommand()) {
 
-                embedBuilder.addField(serverCommand.commandEmoji().getName() + " /" + ServerCommandMethods.getCommandName(serverCommand), "```" + serverCommand.description() + "```", true);
+                embedBuilder.addField(serverCommand.commandEmoji().getName() + " /" + CommandMethods.getServerCommandName(serverCommand), "```" + serverCommand.description() + "```", true);
 
             } else {
 
@@ -50,7 +68,7 @@ public interface HelpEmbeds {
                 try {
                     String prefix1 = prefix.getString("prefix");
 
-                    embedBuilder.addField(serverCommand.commandEmoji().getName() + " " + prefix1 + ServerCommandMethods.getCommandName(serverCommand), "```" + serverCommand.description() + "```", true);
+                    embedBuilder.addField(serverCommand.commandEmoji().getName() + " " + prefix1 + CommandMethods.getServerCommandName(serverCommand), "```" + serverCommand.description() + "```", true);
 
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -59,6 +77,10 @@ public interface HelpEmbeds {
             }
 
         });
+
+        categoryUserCommands.forEach(userContextMenu -> embedBuilder.addField(userContextMenu.commandEmoji().getName() + " USER/" + CommandMethods.getUserContextMenuName(userContextMenu), "```" + userContextMenu.description() + "```", true));
+
+        categoryMessageCommands.forEach(messageContextMenu -> embedBuilder.addField(messageContextMenu.commandEmoji().getName() + " MESSAGE/" + CommandMethods.getMessageContextMenuName(messageContextMenu), "```" + messageContextMenu.description() + "```", true));
 
         embedBuilder.setTitle(category);
         embedBuilder.setColor(EmbedValues.standardColor);
@@ -69,7 +91,7 @@ public interface HelpEmbeds {
 
     }
 
-    static MessageEmbed command(ServerCommand command, TextChannel textChannel) {
+    static MessageEmbed slashCommand(ServerCommand command, TextChannel textChannel) {
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
@@ -79,7 +101,7 @@ public interface HelpEmbeds {
 
         ResultSet prefix = LiteSQL.onQuery("SELECT prefix FROM prefix WHERE guildid = " + textChannel.getGuild().getIdLong());
 
-        String commandPrefix = null;
+        String commandPrefix;
         try {
             commandPrefix = prefix.getString("prefix");
 
@@ -89,10 +111,10 @@ public interface HelpEmbeds {
 
                 stringBuilder.append(commandPrefix);
 
-                embedBuilder.setTitle(command.category() + " » " + command.commandEmoji().getName() + " " + commandPrefix + ServerCommandMethods.getCommandName(command));
+                embedBuilder.setTitle(command.category() + " » " + command.commandEmoji().getName() + " " + commandPrefix + CommandMethods.getServerCommandName(command));
 
                 stringBuilder
-                        .append(ServerCommandMethods.getCommandName(command))
+                        .append(CommandMethods.getServerCommandName(command))
                         .append("\n");
 
                 if (command.options() != null) {
@@ -103,7 +125,7 @@ public interface HelpEmbeds {
                         stringBuilder
                                 .append("➤ ")
                                 .append(finalCommandPrefix1)
-                                .append(ServerCommandMethods.getCommandName(command))
+                                .append(CommandMethods.getServerCommandName(command))
                                 .append(" [(")
                                 .append(optionData.getType().name())
                                 .append(") ")
@@ -120,10 +142,10 @@ public interface HelpEmbeds {
 
                 stringBuilder.append(commandPrefix);
 
-                embedBuilder.setTitle(command.category() + " » " + command.commandEmoji().getName() + " " + commandPrefix + ServerCommandMethods.getCommandName(command));
+                embedBuilder.setTitle(command.category() + " » " + command.commandEmoji().getName() + " " + commandPrefix + CommandMethods.getServerCommandName(command));
 
                 stringBuilder
-                        .append(ServerCommandMethods.getCommandName(command))
+                        .append(CommandMethods.getServerCommandName(command))
                         .append("\n");
 
                 if (command.options() != null) {
@@ -135,7 +157,7 @@ public interface HelpEmbeds {
                         stringBuilder
                                 .append("➤ ")
                                 .append(finalCommandPrefix)
-                                .append(ServerCommandMethods.getCommandName(command))
+                                .append(CommandMethods.getServerCommandName(command))
                                 .append(" [(")
                                 .append(optionData.getType().name())
                                 .append(") ")
@@ -165,7 +187,7 @@ public interface HelpEmbeds {
             stringBuilder1.append(commandPrefix);
 
             stringBuilder1
-                    .append(ServerCommandMethods.getCommandName(command))
+                    .append(CommandMethods.getServerCommandName(command))
                     .append("\n");
 
             if (command.options() != null) {
@@ -176,7 +198,7 @@ public interface HelpEmbeds {
                     stringBuilder1
                             .append("➤ ")
                             .append(finalCommandPrefix1)
-                            .append(ServerCommandMethods.getCommandName(command))
+                            .append(CommandMethods.getServerCommandName(command))
                             .append(" ");
 
                     if (optionData.getChoices().isEmpty()) {
@@ -228,7 +250,7 @@ public interface HelpEmbeds {
             stringBuilder1.append(commandPrefix);
 
             stringBuilder1
-                    .append(ServerCommandMethods.getCommandName(command))
+                    .append(CommandMethods.getServerCommandName(command))
                     .append("\n");
 
             if (command.options() != null) {
@@ -240,7 +262,7 @@ public interface HelpEmbeds {
                     stringBuilder
                             .append("➤ ")
                             .append(finalCommandPrefix)
-                            .append(ServerCommandMethods.getCommandName(command))
+                            .append(CommandMethods.getServerCommandName(command))
                             .append(" ");
 
                     if (optionData.getChoices().isEmpty()) {
@@ -320,9 +342,91 @@ public interface HelpEmbeds {
 
     }
 
+    static MessageEmbed userCommand(UserContextMenu command) {
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+
+        embedBuilder.setTitle(command.category() + " » " + command.commandEmoji().getName() + " USER/" + CommandMethods.getUserContextMenuName(command));
+
+        String fieldValue = "```➤ USER/" + CommandMethods.getUserContextMenuName(command) + "```";
+
+        embedBuilder.addField("Anwendung", fieldValue, true);
+        embedBuilder.addField("Beispiele", fieldValue, true);
+
+        if (command.requiredPermissions() != null) {
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.append("```");
+
+            command.requiredPermissions().forEach(permission -> {
+
+                stringBuilder
+                        .append("• ")
+                        .append(permission.getName())
+                        .append("\n");
+
+            });
+
+            stringBuilder.append("```");
+
+            embedBuilder.addField("Erforderliche Berechtigungen", stringBuilder.toString(), false);
+
+        }
+
+        embedBuilder.setDescription(command.description());
+        embedBuilder.setColor(EmbedValues.standardColor);
+        embedBuilder.setFooter(EmbedValues.embedFooterText, EmbedValues.embedFooterPictureLink);
+        embedBuilder.setTimestamp(OffsetDateTime.now());
+
+        return embedBuilder.build();
+
+    }
+
+    static MessageEmbed messageCommand(MessageContextMenu command) {
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+
+        embedBuilder.setTitle(command.category() + " » " + command.commandEmoji().getName() + " USER/" + CommandMethods.getMessageContextMenuName(command));
+
+        String fieldValue = "```➤ USER/" + CommandMethods.getMessageContextMenuName(command) + "```";
+
+        embedBuilder.addField("Anwendung", fieldValue, true);
+        embedBuilder.addField("Beispiele", fieldValue, true);
+
+        if (command.requiredPermissions() != null) {
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.append("```");
+
+            command.requiredPermissions().forEach(permission -> {
+
+                stringBuilder
+                        .append("• ")
+                        .append(permission.getName())
+                        .append("\n");
+
+            });
+
+            stringBuilder.append("```");
+
+            embedBuilder.addField("Erforderliche Berechtigungen", stringBuilder.toString(), false);
+
+        }
+
+        embedBuilder.setDescription(command.description());
+        embedBuilder.setColor(EmbedValues.standardColor);
+        embedBuilder.setFooter(EmbedValues.embedFooterText, EmbedValues.embedFooterPictureLink);
+        embedBuilder.setTimestamp(OffsetDateTime.now());
+
+        return embedBuilder.build();
+
+    }
+
     static MessageEmbed mainPage() {
 
-        ServerCommand helpServerCommand = ServerCommandManager.commandsMap.get("help");
+        ServerCommand helpServerCommand = ServerCommandManager.slashCommandsMap.get("help");
 
         return EmbedTemplates.standardEmbed(helpServerCommand.commandEmoji().getName() + " Hilfe", "Willkommen in der Hilfe-Station des " + MattiBot.jda.getSelfUser().getAsMention() + "-Bots.\n\nDu kannst entweder unten eine Kategorie auswählen, oder diesen Befehl nochmal ausführen und dabei hinter den Befehlsnamen den Namen einer Kategorie oder eines Befehls schreiben.");
 

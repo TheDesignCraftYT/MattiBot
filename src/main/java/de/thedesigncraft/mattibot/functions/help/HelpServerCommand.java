@@ -2,24 +2,22 @@ package de.thedesigncraft.mattibot.functions.help;
 
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
-import de.thedesigncraft.mattibot.constants.methods.ServerCommandMethods;
+import de.thedesigncraft.mattibot.constants.methods.CommandMethods;
 import de.thedesigncraft.mattibot.constants.values.commands.Categories;
 import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
+import de.thedesigncraft.mattibot.contextmenus.types.MessageContextMenu;
+import de.thedesigncraft.mattibot.contextmenus.types.UserContextMenu;
 import de.thedesigncraft.mattibot.functions.help.methods.HelpActionRows;
 import de.thedesigncraft.mattibot.functions.help.methods.HelpEmbeds;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
 import de.thedesigncraft.mattibot.manage.ServerCommandManager;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,7 +45,7 @@ public class HelpServerCommand implements ServerCommand {
     public List<OptionData> options() {
         List<OptionData> options = new ArrayList<>();
         OptionData command = new OptionData(OptionType.STRING, "command", "Welchen Command möchtest du öffnen?", false);
-        ServerCommands.serverCommands().forEach(serverCommand -> command.addChoice(ServerCommandMethods.getCommandName(serverCommand), "/" + ServerCommandMethods.getCommandName(serverCommand)));
+        ServerCommands.serverCommands().forEach(serverCommand -> command.addChoice(CommandMethods.getServerCommandName(serverCommand), "/" + CommandMethods.getServerCommandName(serverCommand)));
         options.add(command);
         OptionData category = new OptionData(OptionType.STRING, "category", "Welche Kategorie möchtest du öffnen?", false);
         Categories.categories().forEach(category::addChoice);
@@ -86,15 +84,27 @@ public class HelpServerCommand implements ServerCommand {
 
                 String arg2 = Categories.categories().get(arg);
 
-                ServerCommand arg3 = ServerCommandManager.commandsMap.get(arg);
+                ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(arg);
+
+                UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(arg);
+
+                MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(arg);
 
                 if (arg2 != null) {
 
                     event.getMessage().replyEmbeds(HelpEmbeds.category(arg2, event.getGuild())).setActionRows(HelpActionRows.category(arg2, event.getMember().getIdLong(), event.getGuild())).mentionRepliedUser(false).queue();
 
-                } else if (arg3 != null) {
+                } else if (slashCommand != null) {
 
-                    event.getMessage().replyEmbeds(HelpEmbeds.command(arg3, event.getChannel().asTextChannel())).setActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).mentionRepliedUser(false).queue();
+                    event.getMessage().replyEmbeds(HelpEmbeds.slashCommand(slashCommand, event.getChannel().asTextChannel())).setActionRow(HelpActionRows.command(slashCommand.category(), event.getMember().getIdLong())).mentionRepliedUser(false).queue();
+
+                } else if (userContextMenu != null) {
+
+                    event.getMessage().replyEmbeds(HelpEmbeds.userCommand(userContextMenu)).setActionRow(HelpActionRows.command(userContextMenu.category(), event.getMember().getIdLong())).mentionRepliedUser(false).queue();
+
+                } else if (messageContextMenu != null) {
+
+                    event.getMessage().replyEmbeds(HelpEmbeds.messageCommand(messageContextMenu)).setActionRow(HelpActionRows.command(messageContextMenu.category(), event.getMember().getIdLong())).mentionRepliedUser(false).queue();
 
                 } else {
 
@@ -138,9 +148,29 @@ public class HelpServerCommand implements ServerCommand {
 
         } else if (event.getOption("category") == null && event.getOption("command") != null) {
 
-            ServerCommand arg3 = ServerCommandManager.commandsMap.get(event.getOption("command").getAsString().replace("/", ""));
+            ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(event.getOption("command").getAsString().replace("/", ""));
 
-            event.replyEmbeds(HelpEmbeds.command(arg3, event.getChannel().asTextChannel())).addActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).queue();
+            UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(event.getOption("command").getAsString().replace("USER/", ""));
+
+            MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(event.getOption("command").getAsString().replace("MESSAGE/", ""));
+
+            if (slashCommand != null) {
+
+                event.replyEmbeds(HelpEmbeds.slashCommand(slashCommand, event.getChannel().asTextChannel())).addActionRow(HelpActionRows.command(slashCommand.category(), event.getMember().getIdLong())).queue();
+
+            } else if (userContextMenu != null) {
+
+                event.replyEmbeds(HelpEmbeds.userCommand(userContextMenu)).addActionRow(HelpActionRows.command(userContextMenu.category(), event.getMember().getIdLong())).queue();
+
+            } else if (messageContextMenu != null) {
+
+                event.replyEmbeds(HelpEmbeds.messageCommand(messageContextMenu)).addActionRow(HelpActionRows.command(messageContextMenu.category(), event.getMember().getIdLong())).queue();
+
+            } else {
+
+                event.replyEmbeds(EmbedTemplates.issueEmbed("Ein unerwarteter Fehler ist aufgetreten.\n\nWenn dies passiert, melde es bitte umgehend dem Entwickler des Bots.", true)).queue();
+
+            }
 
         } else {
 

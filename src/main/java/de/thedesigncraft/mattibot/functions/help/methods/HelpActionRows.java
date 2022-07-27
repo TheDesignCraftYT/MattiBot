@@ -1,10 +1,14 @@
 package de.thedesigncraft.mattibot.functions.help.methods;
 
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
-import de.thedesigncraft.mattibot.constants.methods.ServerCommandMethods;
+import de.thedesigncraft.mattibot.constants.methods.CommandMethods;
 import de.thedesigncraft.mattibot.constants.methods.StandardActionRows;
 import de.thedesigncraft.mattibot.constants.values.commands.Categories;
+import de.thedesigncraft.mattibot.constants.values.commands.MessageContextMenus;
 import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
+import de.thedesigncraft.mattibot.constants.values.commands.UserContextMenus;
+import de.thedesigncraft.mattibot.contextmenus.types.MessageContextMenu;
+import de.thedesigncraft.mattibot.contextmenus.types.UserContextMenu;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
@@ -24,22 +28,37 @@ public interface HelpActionRows {
 
     static List<ActionRow> category(String category, long userId, Guild guild) {
         List<Button> buttons = new ArrayList<>();
-        List<ServerCommand> categoryCommands = new ArrayList<>();
+
+        List<ServerCommand> categorySlashCommands = new ArrayList<>();
+        List<UserContextMenu> categoryUserCommands = new ArrayList<>();
+        List<MessageContextMenu> categoryMessageCommands = new ArrayList<>();
+
         ServerCommands.serverCommands().forEach(serverCommand -> {
 
-            if(serverCommand.category().equals(category)) {
-
-                categoryCommands.add(serverCommand);
-
-            }
+            if(serverCommand.category().equals(category))
+                categorySlashCommands.add(serverCommand);
 
         });
 
-        categoryCommands.forEach(serverCommand -> {
+        UserContextMenus.userContextMenus().forEach(userContextMenu -> {
+
+            if (userContextMenu.category().equals(category))
+                categoryUserCommands.add(userContextMenu);
+
+        });
+
+        MessageContextMenus.messageContextMenus().forEach(messageContextMenu -> {
+
+            if (messageContextMenu.category().equals(category))
+                categoryMessageCommands.add(messageContextMenu);
+
+        });
+
+        categorySlashCommands.forEach(serverCommand -> {
 
             if(serverCommand.slashCommand()) {
 
-                buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&command=" + ServerCommandMethods.getCommandName(serverCommand) + "&id=" + userId, "/" + ServerCommandMethods.getCommandName(serverCommand), serverCommand.commandEmoji()));
+                buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&slashCommand=" + CommandMethods.getServerCommandName(serverCommand) + "&id=" + userId, "/" + CommandMethods.getServerCommandName(serverCommand), serverCommand.commandEmoji()));
 
             } else {
 
@@ -48,7 +67,7 @@ public interface HelpActionRows {
                 try {
                     String prefix1 = prefix.getString("prefix");
 
-                    buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&command=" + ServerCommandMethods.getCommandName(serverCommand) + "&id=" + userId, prefix1 + ServerCommandMethods.getCommandName(serverCommand), serverCommand.commandEmoji()));
+                    buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&slashCommand=" + CommandMethods.getServerCommandName(serverCommand) + "&id=" + userId, prefix1 + CommandMethods.getServerCommandName(serverCommand), serverCommand.commandEmoji()));
 
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -57,6 +76,10 @@ public interface HelpActionRows {
             }
 
         });
+
+        categoryUserCommands.forEach(userContextMenu -> buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&slashCommand=" + CommandMethods.getUserContextMenuName(userContextMenu) + "&id=" + userId, "USER/" + CommandMethods.getUserContextMenuName(userContextMenu), userContextMenu.commandEmoji())));
+
+        categoryMessageCommands.forEach(messageContextMenu -> buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&slashCommand=" + CommandMethods.getMessageContextMenuName(messageContextMenu) + "&id=" + userId, "MESSAGE/" + CommandMethods.getMessageContextMenuName(messageContextMenu), messageContextMenu.commandEmoji())));
 
         List<ActionRow> returnList = new ArrayList<>();
 
@@ -95,13 +118,13 @@ public interface HelpActionRows {
 
     }
 
-    static Button command(ServerCommand serverCommand, long userId) {
+    static Button command(String category, long userId) {
 
-        return Button.of(ButtonStyle.SECONDARY, "help.goToCategory&category=" + serverCommand.category() + "&id=" + userId, "Zurück", Emoji.fromUnicode("U+25c0"));
+        return Button.of(ButtonStyle.SECONDARY, "help.goToCategory&category=" + category + "&id=" + userId, "Zurück", Emoji.fromUnicode("U+25c0"));
 
     }
 
-    static SelectMenu allCommands(User user) {
+    static SelectMenu allCategories(User user) {
 
         List<SelectOption> selectOptions = new ArrayList<>();
 
@@ -114,7 +137,7 @@ public interface HelpActionRows {
     static List<ActionRow> mainPage(User user) {
 
         List<ActionRow> returnList = new ArrayList<>();
-        returnList.add(ActionRow.of(allCommands(user)));
+        returnList.add(ActionRow.of(allCategories(user)));
         returnList.add(ActionRow.of(StandardActionRows.cancelButton(user)));
 
         return returnList;

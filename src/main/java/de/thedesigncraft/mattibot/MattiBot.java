@@ -1,19 +1,20 @@
 package de.thedesigncraft.mattibot;
 
+import de.thedesigncraft.mattibot.commands.categories.moderation.ClearServerCommand;
 import de.thedesigncraft.mattibot.commands.categories.moderation.TempBanServerCommand;
+import de.thedesigncraft.mattibot.constants.methods.CommandMethods;
 import de.thedesigncraft.mattibot.constants.methods.MainMethods;
-import de.thedesigncraft.mattibot.constants.methods.ServerCommandMethods;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
 import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
-import de.thedesigncraft.mattibot.commands.categories.moderation.ClearServerCommand;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
 import de.thedesigncraft.mattibot.functions.help.HelpActionRowListener;
+import de.thedesigncraft.mattibot.functions.joinroles.JoinRolesActionRowListener;
+import de.thedesigncraft.mattibot.functions.joinroles.JoinRolesMessageListener;
+import de.thedesigncraft.mattibot.functions.joinroles.MemberJoinListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistActionRowListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistMessageListener;
 import de.thedesigncraft.mattibot.listeners.*;
-import de.thedesigncraft.mattibot.manage.LiteSQL;
-import de.thedesigncraft.mattibot.manage.SQLManager;
-import de.thedesigncraft.mattibot.manage.ServerCommandManager;
+import de.thedesigncraft.mattibot.manage.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -66,7 +67,8 @@ public class MattiBot {
                 new HelpActionRowListener(),
                 new WhitelistActionRowListener(),
                 new ModerationActionRowListener(),
-                new ClearServerCommand()
+                new ClearServerCommand(),
+                new JoinRolesActionRowListener()
 
         );
 
@@ -83,7 +85,9 @@ public class MattiBot {
                 new GuildJoinListener(),
                 new WhitelistMessageListener(),
                 new DevCommandListener(),
-                new NewUpdateListener()
+                new NewUpdateListener(),
+                new JoinRolesMessageListener(),
+                new MemberJoinListener()
 
         );
 
@@ -185,11 +189,11 @@ public class MattiBot {
 
                                 if (serverCommand.slashCommand()) {
 
-                                    System.out.println("| - /" + ServerCommandMethods.getCommandName(serverCommand));
+                                    System.out.println("| - /" + CommandMethods.getServerCommandName(serverCommand));
 
                                 } else {
 
-                                    System.out.println("| - " + MainValues.standardcommandPrefix + ServerCommandMethods.getCommandName(serverCommand));
+                                    System.out.println("| - " + MainValues.standardcommandPrefix + CommandMethods.getServerCommandName(serverCommand));
 
                                 }
 

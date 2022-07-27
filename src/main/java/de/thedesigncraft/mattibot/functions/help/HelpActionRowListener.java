@@ -3,6 +3,8 @@ package de.thedesigncraft.mattibot.functions.help;
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
 import de.thedesigncraft.mattibot.constants.methods.StandardActionRows;
+import de.thedesigncraft.mattibot.contextmenus.types.MessageContextMenu;
+import de.thedesigncraft.mattibot.contextmenus.types.UserContextMenu;
 import de.thedesigncraft.mattibot.functions.help.methods.HelpActionRows;
 import de.thedesigncraft.mattibot.functions.help.methods.HelpEmbeds;
 import de.thedesigncraft.mattibot.manage.ServerCommandManager;
@@ -21,13 +23,25 @@ public class HelpActionRowListener extends ListenerAdapter {
 
         if (StandardActionRows.proofButton(event, "help.goToCommand", user)) {
 
-            String arg = event.getButton().getId().split("&")[1].replace("command=", "");
+            String arg = event.getButton().getId().split("&")[1].replace("slashCommand=", "");
 
-            ServerCommand arg3 = ServerCommandManager.commandsMap.get(arg);
+            ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(arg);
 
-            if (arg3 != null) {
+            UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(arg);
 
-                event.editMessageEmbeds(HelpEmbeds.command(arg3, event.getChannel().asTextChannel())).setActionRow(HelpActionRows.command(arg3, event.getMember().getIdLong())).queue();
+            MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(arg);
+
+            if (slashCommand != null) {
+
+                event.editMessageEmbeds(HelpEmbeds.slashCommand(slashCommand, event.getChannel().asTextChannel())).setActionRow(HelpActionRows.command(slashCommand.category(), event.getMember().getIdLong())).queue();
+
+            } else if (userContextMenu != null) {
+
+                event.editMessageEmbeds(HelpEmbeds.userCommand(userContextMenu)).setActionRow(HelpActionRows.command(userContextMenu.category(), event.getMember().getIdLong())).queue();
+
+            } else if (messageContextMenu != null) {
+
+                event.editMessageEmbeds(HelpEmbeds.messageCommand(messageContextMenu)).setActionRow(HelpActionRows.command(messageContextMenu.category(), event.getMember().getIdLong())).queue();
 
             } else {
 

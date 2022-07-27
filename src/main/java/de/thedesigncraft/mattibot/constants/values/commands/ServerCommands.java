@@ -7,6 +7,7 @@ import de.thedesigncraft.mattibot.commands.categories.misc.VersionServerCommand;
 import de.thedesigncraft.mattibot.commands.categories.moderation.*;
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
 import de.thedesigncraft.mattibot.functions.help.HelpServerCommand;
+import de.thedesigncraft.mattibot.functions.joinroles.JoinRolesServerCommand;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistServerCommand;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public interface ServerCommands {
         returnList.add(new ClearServerCommand());
         returnList.add(new UnbanServerCommand());
         returnList.add(new VersionServerCommand());
+        returnList.add(new JoinRolesServerCommand());
 
         return returnList;
 

@@ -85,11 +85,11 @@ public class KickServerCommand implements ServerCommand {
 
             if (args.length >= 2) {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Kick", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich kicken?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "kick.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Kick", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich kicken?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "kick.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             } else {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Kick", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich kicken?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "kick.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Kick", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich kicken?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "kick.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             }
 
@@ -110,11 +110,11 @@ public class KickServerCommand implements ServerCommand {
 
             if (args.length >= 2) {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Kick", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich kicken?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "kick.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Kick", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich kicken?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "kick.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             } else {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Kick", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich kicken?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "kick.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Kick", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich kicken?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "kick.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             }
 
@@ -162,7 +162,7 @@ public class KickServerCommand implements ServerCommand {
 
             MainMethods.addPunishment(punishment, member.getUser(), member.getGuild());
 
-            ServerCommand kickCommand = ServerCommandManager.commandsMap.get("kick");
+            ServerCommand kickCommand = ServerCommandManager.slashCommandsMap.get("kick");
 
             EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed(kickCommand.commandEmoji().getName() + " Kick", "Du wurdest gekickt."));
 

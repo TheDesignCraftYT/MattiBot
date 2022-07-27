@@ -20,7 +20,6 @@ import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
-import java.sql.Time;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -217,14 +216,9 @@ public class UnbanServerCommand implements ServerCommand {
 
         }
 
-        Date date = Date.from(Instant.now().plusSeconds(1));
-
-        int i = 0;
-
-        while (date.after(Date.from(Instant.now()))) {
-
-            i = i + 1;
-
+        try {
+            TimeUnit.SECONDS.sleep(1);
+        } catch (InterruptedException ignored) {
         }
 
         User user = userList.get(0);
@@ -252,7 +246,7 @@ public class UnbanServerCommand implements ServerCommand {
 
         });
 
-        ServerCommand unbanCommand = ServerCommandManager.commandsMap.get("unban");
+        ServerCommand unbanCommand = ServerCommandManager.slashCommandsMap.get("unban");
 
         EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed(unbanCommand.commandEmoji().getName() + " Ban", ""));
 

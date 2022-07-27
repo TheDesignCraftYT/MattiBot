@@ -66,6 +66,38 @@ public interface MainMethods {
 
     }
 
+    static List<Role> getJoinRoles(Guild guild) {
+
+        ResultSet joinroles = LiteSQL.onQuery("SELECT roles FROM joinroles WHERE guildid = " + guild.getIdLong());
+
+        List<Role> joinrolesList = new ArrayList<>();
+
+        try {
+
+            String[] joinrolesString = joinroles.getString("roles").split(",");
+
+            List<String> list = List.of(joinrolesString);
+
+            if (!list.get(0).equals("") && !list.get(0).equals(" ")) {
+
+                list.forEach(s -> joinrolesList.add(guild.getRoleById(s)));
+
+                return joinrolesList;
+
+            } else {
+
+                return new ArrayList<>(guild.getRoles());
+
+            }
+
+        } catch (SQLException | NullPointerException e) {
+
+            return new ArrayList<>(guild.getRoles());
+
+        }
+
+    }
+
     static List<TextChannel> getWhitelistedChannelDatas(Guild guild) {
 
         ResultSet whitelistedChannels = LiteSQL.onQuery("SELECT channels FROM whitelistedChannels WHERE guildid = " + guild.getIdLong());
@@ -220,4 +252,34 @@ public interface MainMethods {
 
     }
 
+    static List<Role> getJoinRoleDatas(Guild guild) {
+
+        ResultSet joinroles = LiteSQL.onQuery("SELECT roles FROM joinroles WHERE guildid = " + guild.getIdLong());
+
+        List<Role> joinrolesList = new ArrayList<>();
+
+        try {
+            String[] joinrolesString = joinroles.getString("roles").split(",");
+
+            List<String> list = List.of(joinrolesString);
+
+            if (!list.get(0).equals("") && !list.get(0).equals(" ")) {
+
+                list.forEach(s -> joinrolesList.add(guild.getRoleById(s)));
+
+                return joinrolesList;
+
+            } else {
+
+                return null;
+
+            }
+
+        } catch (SQLException | NullPointerException e) {
+
+            return null;
+
+        }
+
+    }
 }

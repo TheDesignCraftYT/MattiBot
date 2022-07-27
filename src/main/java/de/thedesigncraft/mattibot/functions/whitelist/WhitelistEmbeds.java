@@ -12,7 +12,7 @@ public interface WhitelistEmbeds {
 
     static MessageEmbed mainPage(Member member) {
 
-        ServerCommand whiteListCommand = ServerCommandManager.commandsMap.get("whitelist");
+        ServerCommand whiteListCommand = ServerCommandManager.slashCommandsMap.get("whitelist");
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.copyFrom(EmbedTemplates.standardEmbed(whiteListCommand.commandEmoji().getName() + " Kanal Whitelist", "Hier kannst du bestimmte Kanäle für Befehle freischalten.\nBenutzer mit Admin Berechtigungen können weiterhin jeden Kanal nutzen."));
@@ -40,7 +40,7 @@ public interface WhitelistEmbeds {
 
     static MessageEmbed addChannels() {
 
-        ServerCommand whiteListCommand = ServerCommandManager.commandsMap.get("whitelist");
+        ServerCommand whiteListCommand = ServerCommandManager.slashCommandsMap.get("whitelist");
 
         return EmbedTemplates.standardEmbed(whiteListCommand.commandEmoji().getName() + " Kanal Whitelist", "Antworte auf diese Nachricht mit einem Kanal, um ihn zu den gewhitelisteten Kanälen **__hinzuzufügen__**.");
 
@@ -48,9 +48,10 @@ public interface WhitelistEmbeds {
 
     static MessageEmbed removeChannels() {
 
-        ServerCommand whiteListCommand = ServerCommandManager.commandsMap.get("whitelist");
+        ServerCommand whiteListCommand = ServerCommandManager.slashCommandsMap.get("whitelist");
 
         return EmbedTemplates.standardEmbed(whiteListCommand.commandEmoji().getName() + " Kanal Whitelist", "Antworte auf diese Nachricht mit einem Kanal, um ihn aus den gewhitelisteten Kanälen zu **__entfernen__**.");
 
     }
+
 }

@@ -53,4 +53,5 @@ public class WhitelistActionRowListener extends ListenerAdapter {
         }
 
     }
+
 }

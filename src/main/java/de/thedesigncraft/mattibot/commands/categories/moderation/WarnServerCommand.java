@@ -77,23 +77,23 @@ public class WarnServerCommand implements ServerCommand {
     @Override
     public void performGuildMessageCommand(MessageReceivedEvent event) {
 
-        if (event.getMessage().getMentions().getMembers().get(0) != null) {
+        if (!event.getMessage().getMentions().getMembers().isEmpty() && event.getMessage().getMentions().getMembers().get(0) != null) {
 
             Member member = event.getMessage().getMentions().getMembers().get(0);
 
             String[] args = event.getMessage().getContentDisplay().replace("warn", "").split(" ");
 
-            if (args.length >= 2) {
+            if (args.length >= 3) {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Verwarnung", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich verwarnen?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "warn.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Verwarnung", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich verwarnen?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "warn.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             } else {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Verwarnung", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich verwarnen?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "warn.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Verwarnung", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich verwarnen?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "warn.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             }
 
-        } else if (event.getMessage().getMentions().getRoles().get(0) != null || event.getMessage().getMentions().getChannels().get(0) != null) {
+        } else if (!event.getMessage().getMentions().getRoles().isEmpty() || !event.getMessage().getMentions().getChannels().isEmpty()) {
 
             event.getMessage().replyEmbeds(EmbedTemplates.issueEmbed("Du musst einen User angeben.", true)).mentionRepliedUser(false).queue(message -> {
 
@@ -102,19 +102,19 @@ public class WarnServerCommand implements ServerCommand {
 
             });
 
-        } else if (event.getGuild().getMemberById(event.getMessage().getContentDisplay().replace("warn", "").split(" ")[1]) != null) {
+        } else if (event.getMessage().getContentDisplay().split(" ").length >= 2 && event.getGuild().getMemberById(event.getMessage().getContentDisplay().replace("warn", "").split(" ")[1]) != null) {
 
             Member member = event.getGuild().getMemberById(event.getMessage().getContentDisplay().replace("warn", "").split(" ")[1]);
 
             String[] args = event.getMessage().getContentDisplay().replace("warn", "").split(" ");
 
-            if (args.length >= 2) {
+            if (args.length >= 3) {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Verwarnung", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich verwarnen?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "warn.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Verwarnung", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich verwarnen?")).addField("Grund:", args[1], false).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "warn.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             } else {
 
-                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Verwarnung", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich verwarnen?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "warn.success&id=" + member.getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(member.getUser()))).mentionRepliedUser(false).queue();
+                event.getMessage().replyEmbeds(new EmbedBuilder(EmbedTemplates.standardEmbed(commandEmoji().getName() + " Verwarnung", "Möchtest du **" + member.getUser().getAsMention() + "** wirklich verwarnen?")).build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "warn.success&id=" + event.getMember().getIdLong(), "Bestätigen"), StandardActionRows.cancelButton(event.getAuthor()))).mentionRepliedUser(false).queue();
 
             }
 
@@ -162,7 +162,7 @@ public class WarnServerCommand implements ServerCommand {
 
             MainMethods.addPunishment(punishment, member.getUser(), member.getGuild());
 
-            ServerCommand warnCommand = ServerCommandManager.commandsMap.get("warn");
+            ServerCommand warnCommand = ServerCommandManager.slashCommandsMap.get("warn");
 
             EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed(warnCommand.commandEmoji().getName() + " Verwarnung", "Du wurdest verwarnt."));
 

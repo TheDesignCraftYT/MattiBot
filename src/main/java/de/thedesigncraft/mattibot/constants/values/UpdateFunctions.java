@@ -32,6 +32,11 @@ public interface UpdateFunctions {
         returnList.add(new String[]{Versions.versions().get("v100a5"), "/kick", "Bugs gefixt."});
         returnList.add(new String[]{Versions.versions().get("v100a5"), "/tempban", "Bugs gefixt."});
 
+        // v1.0.0-alpha.6
+        returnList.add(new String[]{Versions.versions().get("v100a6"), "/warn", "Bugs gefixt."});
+        returnList.add(new String[]{Versions.versions().get("v100a6"), "/help", "Verarbeitung von ContextMenus hinzugefügt."});
+        returnList.add(new String[]{Versions.versions().get("v100a6"), "UpdateNachrichten", "Verarbeitung von ContextMenus hinzugefügt."});
+
         return returnList;
 
     }

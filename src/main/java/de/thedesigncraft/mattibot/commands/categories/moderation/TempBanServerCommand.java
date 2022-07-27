@@ -265,7 +265,7 @@ public class TempBanServerCommand implements ServerCommand {
 
                 MainMethods.addPunishment(punishment, member.getUser(), member.getGuild());
 
-                ServerCommand tempbanCommand = ServerCommandManager.commandsMap.get("tempban");
+                ServerCommand tempbanCommand = ServerCommandManager.slashCommandsMap.get("tempban");
 
                 EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed(tempbanCommand.commandEmoji().getName() + " TempBan", "Du wurdest gebannt."));
 

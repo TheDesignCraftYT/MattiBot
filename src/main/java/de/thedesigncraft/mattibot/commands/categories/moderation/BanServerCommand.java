@@ -163,7 +163,7 @@ public class BanServerCommand implements ServerCommand {
 
             MainMethods.addPunishment(punishment, member.getUser(), member.getGuild());
 
-            ServerCommand banCommand = ServerCommandManager.commandsMap.get("ban");
+            ServerCommand banCommand = ServerCommandManager.slashCommandsMap.get("ban");
 
             EmbedBuilder embedBuilder = new EmbedBuilder(EmbedTemplates.standardEmbed(banCommand.commandEmoji().getName() + " Ban", "Du wurdest gebannt."));
 
