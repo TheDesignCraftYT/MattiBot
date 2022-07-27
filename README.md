@@ -14,6 +14,10 @@ Der MattiBot ist ein von `TheDesignCraft#7886` programmierter Discord Bot für d
 Hier eine Liste der wichtigsten Funktionen:
 - Whitelist
 - Moderation
+- JoinRoles
+- Prefix
+- Clear
+- Help
 
 Führe `/help` in Discord aus, um eine Liste und Hilfe von allen Befehlen & Funktionen zu bekommen.
 
