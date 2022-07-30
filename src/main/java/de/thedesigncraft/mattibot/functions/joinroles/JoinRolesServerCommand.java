@@ -58,11 +58,11 @@ public class JoinRolesServerCommand implements ServerCommand {
 
         if (JoinRolesEmbeds.mainPage(event.getMember()).getFields().get(0).getValue().equals("```Keine Rollen```")) {
 
-            event.getMessage().replyEmbeds(JoinRolesEmbeds.mainPage(event.getMember())).setActionRows(JoinRolesActionRows.mainPageDisabled(event.getMember().getUser())).mentionRepliedUser(false).queue();
+            event.getMessage().replyEmbeds(JoinRolesEmbeds.mainPage(event.getMember())).setActionRows(JoinRolesActionRows.mainPageDisabled(event.getAuthor())).mentionRepliedUser(false).queue();
 
         } else {
 
-            event.getMessage().replyEmbeds(JoinRolesEmbeds.mainPage(event.getMember())).setActionRows(JoinRolesActionRows.mainPage(event.getMember().getUser())).mentionRepliedUser(false).queue();
+            event.getMessage().replyEmbeds(JoinRolesEmbeds.mainPage(event.getMember())).setActionRows(JoinRolesActionRows.mainPage(event.getAuthor())).mentionRepliedUser(false).queue();
 
         }
 

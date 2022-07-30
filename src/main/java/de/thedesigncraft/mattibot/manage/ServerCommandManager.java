@@ -315,8 +315,9 @@ public class ServerCommandManager extends ListenerAdapter {
                 }
 
             } catch (SQLException e) {
-                Logger logger = LoggerFactory.getLogger(ServerCommandManager.class);
-                logger.error(e.getMessage());
+
+                LiteSQL.onUpdate("INSERT INTO prefix(guildid, prefix) VALUES(" + event.getGuild().getIdLong() + ", '" + MainValues.standardcommandPrefix + "')");
+
             }
 
         }

@@ -76,7 +76,7 @@ public class WhitelistMessageListener extends ListenerAdapter {
         }
 
         // Remove Channels
-        if (event.getMessage().getMessageReference() != null && event.getMessage().getReferencedMessage().getAuthor().equals(MattiBot.jda.getSelfUser()) && event.getMessage().getReferencedMessage().getEmbeds().get(0).getTitle().equals(WhitelistEmbeds.removeChannels().getTitle()) && event.getMessage().getReferencedMessage().getEmbeds().get(0).getDescription().startsWith(WhitelistEmbeds.removeChannels().getDescription())) {
+        if (event.getMessage().getMessageReference() != null && event.getMessage().getReferencedMessage() != null && event.getMessage().getReferencedMessage().getAuthor().equals(MattiBot.jda.getSelfUser()) && event.getMessage().getReferencedMessage().getEmbeds().get(0).getTitle().equals(WhitelistEmbeds.removeChannels().getTitle()) && event.getMessage().getReferencedMessage().getEmbeds().get(0).getDescription().startsWith(WhitelistEmbeds.removeChannels().getDescription())) {
 
             if (event.getMessage().getReferencedMessage().getActionRows().get(0).getButtons().get(0).getId().replace("whitelist.goToMainPage&id=", "").equals(event.getAuthor().getId())) {
 

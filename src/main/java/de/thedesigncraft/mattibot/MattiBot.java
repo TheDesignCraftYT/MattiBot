@@ -11,6 +11,9 @@ import de.thedesigncraft.mattibot.functions.help.HelpActionRowListener;
 import de.thedesigncraft.mattibot.functions.joinroles.JoinRolesActionRowListener;
 import de.thedesigncraft.mattibot.functions.joinroles.JoinRolesMessageListener;
 import de.thedesigncraft.mattibot.functions.joinroles.MemberJoinListener;
+import de.thedesigncraft.mattibot.functions.report.ReportModalListener;
+import de.thedesigncraft.mattibot.functions.report.settings.ReportSystemActionRowListener;
+import de.thedesigncraft.mattibot.functions.report.settings.ReportSystemMessageListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistActionRowListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistMessageListener;
 import de.thedesigncraft.mattibot.listeners.*;
@@ -68,7 +71,8 @@ public class MattiBot {
                 new WhitelistActionRowListener(),
                 new ModerationActionRowListener(),
                 new ClearServerCommand(),
-                new JoinRolesActionRowListener()
+                new JoinRolesActionRowListener(),
+                new ReportSystemActionRowListener()
 
         );
 
@@ -82,12 +86,13 @@ public class MattiBot {
         // Add Other Listeners
         jdaBuilder.addEventListeners(
 
-                new GuildJoinListener(),
                 new WhitelistMessageListener(),
                 new DevCommandListener(),
                 new NewUpdateListener(),
                 new JoinRolesMessageListener(),
-                new MemberJoinListener()
+                new MemberJoinListener(),
+                new ReportSystemMessageListener(),
+                new ReportModalListener()
 
         );
 
@@ -266,8 +271,9 @@ public class MattiBot {
                 try {
                     guild.modifyNickname(guild.getMemberById(jda.getSelfUser().getIdLong()), jda.getSelfUser().getName() + " [" + prefix.getString("prefix") + "] [/]").queue();
                 } catch (SQLException e) {
-                    Logger logger = LoggerFactory.getLogger(MattiBot.class);
-                    logger.error(e.getMessage());
+
+                    LiteSQL.onUpdate("INSERT INTO prefix(guildid, prefix) VALUES(" + guild.getIdLong() + ", '" + MainValues.standardcommandPrefix + "')");
+
                 }
 
             });

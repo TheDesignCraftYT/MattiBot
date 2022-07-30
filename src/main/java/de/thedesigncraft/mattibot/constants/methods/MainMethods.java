@@ -4,6 +4,7 @@ import de.thedesigncraft.mattibot.MattiBot;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
 import de.thedesigncraft.mattibot.constants.values.TOKEN;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
+import de.thedesigncraft.mattibot.functions.report.settings.ReportSystemActionRows;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
 import net.dv8tion.jda.api.entities.*;
 import org.slf4j.Logger;
@@ -58,7 +59,13 @@ public interface MainMethods {
 
             }
 
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
+
+            LiteSQL.onUpdate("INSERT INTO whitelistedChannels(guildid) VALUES(" + guild.getIdLong() + ")");
+
+            return new ArrayList<>(guild.getTextChannels());
+
+        } catch (NullPointerException e) {
 
             return new ArrayList<>(guild.getTextChannels());
 
@@ -90,7 +97,13 @@ public interface MainMethods {
 
             }
 
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
+
+            LiteSQL.onUpdate("INSERT INTO joinroles(guildid) VALUES(" + guild.getIdLong() + ")");
+
+            return new ArrayList<>(guild.getRoles());
+
+        } catch (NullPointerException e) {
 
             return new ArrayList<>(guild.getRoles());
 
@@ -282,4 +295,61 @@ public interface MainMethods {
         }
 
     }
+
+    static boolean reportSystemActive(Guild guild) {
+
+        String id = ReportSystemActionRows.mainPage(guild.getOwner()).get(0).getButtons().get(1).getId();
+
+        if (id.startsWith("reportSystem.on&id=")) {
+
+            return false;
+
+        } else if (id.startsWith("reportSystem.off&id=")) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+    }
+
+    static String getReportChannelString(Guild guild) {
+
+        ResultSet reportSystem = LiteSQL.onQuery("SELECT channel FROM reportSystem WHERE guildid = " + guild.getIdLong());
+
+        try {
+            TextChannel reportChannel = guild.getTextChannelById(reportSystem.getLong("channel"));
+
+            return reportChannel.getAsMention();
+
+        } catch (SQLException e) {
+
+            LiteSQL.onUpdate("INSERT INTO reportSystem(guildid) VALUES(" + guild.getIdLong() + ")");
+
+            return "```Kein Kanal festgelegt.```";
+
+        } catch (NullPointerException e) {
+
+            return "```Kein Kanal festgelegt.```";
+
+        }
+
+    }
+
+    static TextChannel getReportChannel(Guild guild) {
+
+        if (!getReportChannelString(guild).equals("```Kein Kanal festgelegt.```")) {
+
+            return guild.getTextChannelById(getReportChannelString(guild).replace("<#", "").replace(">", ""));
+
+        } else {
+
+            return null;
+
+        }
+
+    }
+
 }

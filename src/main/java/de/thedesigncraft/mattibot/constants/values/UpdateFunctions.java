@@ -34,8 +34,12 @@ public interface UpdateFunctions {
 
         // v1.0.0-alpha.6
         returnList.add(new String[]{Versions.versions().get("v100a6"), "/warn", "Bugs gefixt."});
+        returnList.add(new String[]{Versions.versions().get("v100a6"), "/kick", "Bugs gefixt."});
         returnList.add(new String[]{Versions.versions().get("v100a6"), "/help", "Verarbeitung von ContextMenus hinzugefügt."});
         returnList.add(new String[]{Versions.versions().get("v100a6"), "UpdateNachrichten", "Verarbeitung von ContextMenus hinzugefügt."});
+
+        // v1.0.0-alpha.7
+        returnList.add(new String[]{Versions.versions().get("v100a7"), "/help", "ContextMenuCommands werden jetzt bei `/help command:` als Option angezeigt."});
 
         return returnList;
 

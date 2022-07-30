@@ -11,6 +11,7 @@ public interface Categories {
         returnList.put("misc", "Nützliches");
         returnList.put("moderation", "Moderation");
         returnList.put("configuration", "Konfiguration");
+        returnList.put("report", "Meldungen");
 
         return returnList;
 

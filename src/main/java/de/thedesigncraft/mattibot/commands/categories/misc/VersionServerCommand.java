@@ -3,7 +3,6 @@ package de.thedesigncraft.mattibot.commands.categories.misc;
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
 import de.thedesigncraft.mattibot.constants.methods.MainMethods;
-import de.thedesigncraft.mattibot.constants.values.TOKEN;
 import de.thedesigncraft.mattibot.constants.values.commands.Categories;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
 import net.dv8tion.jda.api.EmbedBuilder;

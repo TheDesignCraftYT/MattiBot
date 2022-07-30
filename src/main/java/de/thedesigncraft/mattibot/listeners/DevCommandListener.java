@@ -1,9 +1,11 @@
 package de.thedesigncraft.mattibot.listeners;
 
+import de.thedesigncraft.mattibot.MattiBot;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
 import de.thedesigncraft.mattibot.constants.methods.MainMethods;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
+import de.thedesigncraft.mattibot.manage.LiteSQL;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -39,11 +41,23 @@ public class DevCommandListener extends ListenerAdapter {
 
             sendNewUpdateMessage(event);
 
+        } else if (command.startsWith("test")) {
+
+            test(event);
+
         } else {
 
             event.getMessage().replyEmbeds(EmbedTemplates.issueEmbed("Das ist kein registrierter DevCommand.", false)).queue();
 
         }
+
+    }
+
+    private void test(MessageReceivedEvent event) {
+
+        LiteSQL.onUpdate("INSERT INTO joinroles(guildid) VALUES(" + MattiBot.jda.getGuildById(event.getMessage().getContentDisplay().split(" ")[1]).getIdLong() + ")");
+
+        event.getMessage().reply("Done.").queue();
 
     }
 

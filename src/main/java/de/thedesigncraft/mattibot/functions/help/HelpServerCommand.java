@@ -3,9 +3,7 @@ package de.thedesigncraft.mattibot.functions.help;
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
 import de.thedesigncraft.mattibot.constants.methods.CommandMethods;
-import de.thedesigncraft.mattibot.constants.values.commands.Categories;
-import de.thedesigncraft.mattibot.constants.values.commands.ServerCommands;
-import de.thedesigncraft.mattibot.constants.values.commands.Versions;
+import de.thedesigncraft.mattibot.constants.values.commands.*;
 import de.thedesigncraft.mattibot.contextmenus.types.MessageContextMenu;
 import de.thedesigncraft.mattibot.contextmenus.types.UserContextMenu;
 import de.thedesigncraft.mattibot.functions.help.methods.HelpActionRows;
@@ -45,7 +43,11 @@ public class HelpServerCommand implements ServerCommand {
     public List<OptionData> options() {
         List<OptionData> options = new ArrayList<>();
         OptionData command = new OptionData(OptionType.STRING, "command", "Welchen Command möchtest du öffnen?", false);
-        ServerCommands.serverCommands().forEach(serverCommand -> command.addChoice(CommandMethods.getServerCommandName(serverCommand), "/" + CommandMethods.getServerCommandName(serverCommand)));
+
+        ServerCommands.serverCommands().forEach(serverCommand -> command.addChoice("/" + CommandMethods.getServerCommandName(serverCommand), "/" + CommandMethods.getServerCommandName(serverCommand)));
+        UserContextMenus.userContextMenus().forEach(userContextMenu -> command.addChoice("USER/" + CommandMethods.getUserContextMenuName(userContextMenu), "USER/" + CommandMethods.getUserContextMenuName(userContextMenu)));
+        MessageContextMenus.messageContextMenus().forEach(messageContextMenu -> command.addChoice("MESSAGE/" + CommandMethods.getMessageContextMenuName(messageContextMenu), "MESSAGE/" + CommandMethods.getMessageContextMenuName(messageContextMenu)));
+
         options.add(command);
         OptionData category = new OptionData(OptionType.STRING, "category", "Welche Kategorie möchtest du öffnen?", false);
         Categories.categories().forEach(category::addChoice);
