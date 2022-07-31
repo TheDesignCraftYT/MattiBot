@@ -16,6 +16,9 @@ import de.thedesigncraft.mattibot.functions.report.settings.ReportSystemActionRo
 import de.thedesigncraft.mattibot.functions.report.settings.ReportSystemMessageListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistActionRowListener;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistMessageListener;
+import de.thedesigncraft.mattibot.functions.youtube.YoutubeActionRowListener;
+import de.thedesigncraft.mattibot.functions.youtube.YoutubeListener;
+import de.thedesigncraft.mattibot.functions.youtube.YoutubeMessageListener;
 import de.thedesigncraft.mattibot.listeners.*;
 import de.thedesigncraft.mattibot.manage.*;
 import net.dv8tion.jda.api.JDA;
@@ -72,7 +75,8 @@ public class MattiBot {
                 new ModerationActionRowListener(),
                 new ClearServerCommand(),
                 new JoinRolesActionRowListener(),
-                new ReportSystemActionRowListener()
+                new ReportSystemActionRowListener(),
+                new YoutubeActionRowListener()
 
         );
 
@@ -92,7 +96,9 @@ public class MattiBot {
                 new JoinRolesMessageListener(),
                 new MemberJoinListener(),
                 new ReportSystemMessageListener(),
-                new ReportModalListener()
+                new ReportModalListener(),
+                new YoutubeMessageListener(),
+                new YoutubeListener()
 
         );
 

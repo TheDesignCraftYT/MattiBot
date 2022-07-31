@@ -80,7 +80,7 @@ public class ReportSystemMessageListener extends ListenerAdapter {
 
         if (ReportSystemEmbeds.mainPage(guild).getFields().get(0).getValue().equals("```Kein Kanal festgelegt.```") || !ReportSystemEmbeds.mainPage(guild).getFields().get(0).getValue().equals(textChannel.getAsMention())) {
 
-            LiteSQL.onUpdate("UPDATE reportSystem SET channel = '" + textChannel.getIdLong() + "' WHERE guildid = " + guild.getIdLong());
+            LiteSQL.onUpdate("UPDATE reportSystem SET channel = " + textChannel.getIdLong() + " WHERE guildid = " + guild.getIdLong());
 
             message.getReferencedMessage().editMessageEmbeds(new EmbedBuilder(ReportSystemEmbeds.setChannel()).appendDescription("\n\n```✅ '#" + textChannel.getName() + "' als ReportSystem-Kanal festgelegt.```").build()).setActionRows(ActionRow.of(ReportSystemActionRows.goToMainPage(message.getAuthor()))).queue();
 

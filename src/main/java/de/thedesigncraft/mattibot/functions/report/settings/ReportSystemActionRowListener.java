@@ -24,11 +24,11 @@ public class ReportSystemActionRowListener extends ListenerAdapter {
 
             if (ReportSystemEmbeds.mainPage(event.getGuild()).getFields().get(0).getValue().equals("```Kein Kanal festgelegt.```")) {
 
-                event.replyEmbeds(ReportSystemEmbeds.mainPage(event.getGuild())).addActionRows(ReportSystemActionRows.mainPageDisabled(event.getUser())).mentionRepliedUser(false).queue();
+                event.editMessageEmbeds(ReportSystemEmbeds.mainPage(event.getGuild())).setActionRows(ReportSystemActionRows.mainPageDisabled(event.getUser())).queue();
 
             } else {
 
-                event.replyEmbeds(ReportSystemEmbeds.mainPage(event.getGuild())).addActionRows(ReportSystemActionRows.mainPage(event.getMember())).mentionRepliedUser(false).queue();
+                event.editMessageEmbeds(ReportSystemEmbeds.mainPage(event.getGuild())).setActionRows(ReportSystemActionRows.mainPage(event.getMember())).queue();
 
             }
 

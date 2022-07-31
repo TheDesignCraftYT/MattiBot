@@ -41,6 +41,11 @@ public interface UpdateFunctions {
         // v1.0.0-alpha.7
         returnList.add(new String[]{Versions.versions().get("v100a7"), "/help", "ContextMenuCommands werden jetzt bei `/help command:` als Option angezeigt."});
 
+        // v1.0.0-alpha.8
+        returnList.add(new String[]{Versions.versions().get("v100a8"), "/reportsystem", "SystemStatus zur Hauptseite hinzugefügt."});
+        returnList.add(new String[]{Versions.versions().get("v100a8"), "/reportsystem", "Bugs beim Kanal-Festlegen behoben."});
+        returnList.add(new String[]{Versions.versions().get("v100a8"), "/clear", "Für die Nachricht nach dem Löschen einen 'Fertig' Button eingebaut."});
+
         return returnList;
 
     }

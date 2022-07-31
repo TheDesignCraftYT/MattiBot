@@ -288,7 +288,7 @@ public class ClearServerCommand extends ListenerAdapter implements ServerCommand
 
             event.getChannel().purgeMessages(deleteMessages);
 
-            event.editMessageEmbeds(new EmbedBuilder(event.getMessage().getEmbeds().get(0)).setDescription("Es wurden **" + amount + "** Nachrichten gelöscht.").build()).setActionRows().queue();
+            event.editMessageEmbeds(new EmbedBuilder(event.getMessage().getEmbeds().get(0)).setDescription("Es wurden **" + amount + "** Nachrichten gelöscht.").build()).setActionRows(ActionRow.of(Button.of(ButtonStyle.SUCCESS, "cancel&id=" + user.getIdLong(), "Fertig"))).queue();
 
         }
 

@@ -19,6 +19,16 @@ public interface ReportSystemEmbeds {
 
         embedBuilder.addField("ReportChannel", MainMethods.getReportChannelString(guild), true);
 
+        if (MainMethods.reportSystemActive(guild)) {
+
+            embedBuilder.addField("SystemStatus", "```Aktiviert```", true);
+
+        } else {
+
+            embedBuilder.addField("SystemStatus", "```Deaktiviert```", true);
+
+        }
+
         return embedBuilder.build();
 
     }

@@ -6,7 +6,9 @@ import de.thedesigncraft.mattibot.constants.methods.MainMethods;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -55,9 +57,7 @@ public class DevCommandListener extends ListenerAdapter {
 
     private void test(MessageReceivedEvent event) {
 
-        LiteSQL.onUpdate("INSERT INTO joinroles(guildid) VALUES(" + MattiBot.jda.getGuildById(event.getMessage().getContentDisplay().split(" ")[1]).getIdLong() + ")");
-
-        event.getMessage().reply("Done.").queue();
+        event.getMessage().reply("Test").queue();
 
     }
 

@@ -5,6 +5,7 @@ import de.thedesigncraft.mattibot.constants.values.MainValues;
 import de.thedesigncraft.mattibot.constants.values.TOKEN;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
 import de.thedesigncraft.mattibot.functions.report.settings.ReportSystemActionRows;
+import de.thedesigncraft.mattibot.functions.youtube.YoutubeActionRows;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
 import net.dv8tion.jda.api.entities.*;
 import org.slf4j.Logger;
@@ -315,6 +316,18 @@ public interface MainMethods {
         }
     }
 
+    static boolean youtubeActive(Guild guild) {
+
+        ResultSet youtube = LiteSQL.onQuery("SELECT active FROM youtube WHERE guildid = " + guild.getIdLong());
+
+        try {
+            return Boolean.parseBoolean(youtube.getString("active"));
+        } catch (SQLException ignored) {
+        }
+
+        return false;
+    }
+
     static String getReportChannelString(Guild guild) {
 
         ResultSet reportSystem = LiteSQL.onQuery("SELECT channel FROM reportSystem WHERE guildid = " + guild.getIdLong());
@@ -327,6 +340,29 @@ public interface MainMethods {
         } catch (SQLException e) {
 
             LiteSQL.onUpdate("INSERT INTO reportSystem(guildid) VALUES(" + guild.getIdLong() + ")");
+
+            return "```Kein Kanal festgelegt.```";
+
+        } catch (NullPointerException e) {
+
+            return "```Kein Kanal festgelegt.```";
+
+        }
+
+    }
+
+    static String getYoutubeChannelString(Guild guild) {
+
+        ResultSet youtube = LiteSQL.onQuery("SELECT channel FROM youtube WHERE guildid = " + guild.getIdLong());
+
+        try {
+            TextChannel notificationsChannel = guild.getTextChannelById(youtube.getLong("channel"));
+
+            return notificationsChannel.getAsMention();
+
+        } catch (SQLException e) {
+
+            LiteSQL.onUpdate("INSERT INTO youtube(guildid, message, active) VALUES(" + guild.getIdLong() + ", '" + "{%channel_name} hat ein neues Video hochgeladen:\n\n{%video_link}" + "', 'false')");
 
             return "```Kein Kanal festgelegt.```";
 
@@ -352,4 +388,37 @@ public interface MainMethods {
 
     }
 
+    static TextChannel getYoutubeChannel(Guild guild) {
+
+        if (!getYoutubeChannelString(guild).equals("```Kein Kanal festgelegt.```")) {
+
+            return guild.getTextChannelById(getYoutubeChannelString(guild).replace("<#", "").replace(">", ""));
+
+        } else {
+
+            return null;
+
+        }
+
+    }
+
+    static String getYoutubeMessage(Guild guild) {
+
+        ResultSet youtube = LiteSQL.onQuery("SELECT message FROM youtube WHERE guildid = " + guild.getIdLong());
+
+        try {
+
+            assert youtube != null;
+            return "```" + youtube.getString("message") + "```";
+
+        } catch (SQLException e) {
+
+            Logger logger = LoggerFactory.getLogger(MainMethods.class);
+            logger.error("Unerwarteter Fehler.");
+
+            return null;
+
+        }
+
+    }
 }

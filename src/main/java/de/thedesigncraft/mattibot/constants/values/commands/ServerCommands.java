@@ -10,6 +10,7 @@ import de.thedesigncraft.mattibot.functions.help.HelpServerCommand;
 import de.thedesigncraft.mattibot.functions.joinroles.JoinRolesServerCommand;
 import de.thedesigncraft.mattibot.functions.report.settings.ReportSystemServerCommand;
 import de.thedesigncraft.mattibot.functions.whitelist.WhitelistServerCommand;
+import de.thedesigncraft.mattibot.functions.youtube.YoutubeServerCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public interface ServerCommands {
         returnList.add(new VersionServerCommand());
         returnList.add(new JoinRolesServerCommand());
         returnList.add(new ReportSystemServerCommand());
+        returnList.add(new YoutubeServerCommand());
 
         return returnList;
 
