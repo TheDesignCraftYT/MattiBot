@@ -14,46 +14,52 @@ public class MemberJoinListener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
 
-        MainMethods.getJoinRoles(event.getGuild()).forEach(role -> {
+        try {
 
-            try {
+            MainMethods.getJoinRoleDatas(event.getGuild()).forEach(role -> {
 
-                event.getGuild().addRoleToMember(event.getMember(), role).queue();
+                try {
 
-            } catch (HierarchyException e) {
+                    event.getGuild().addRoleToMember(event.getMember(), role).queue();
 
-                if (MainMethods.getJoinRoleDatas(event.getGuild()) != null && MainMethods.getJoinRoleDatas(event.getGuild()).contains(role)) {
+                } catch (HierarchyException e) {
 
-                    StringBuilder stringBuilder = new StringBuilder();
+                    if (MainMethods.getJoinRoleDatas(event.getGuild()) != null && MainMethods.getJoinRoleDatas(event.getGuild()).contains(role)) {
 
-                    if (MainMethods.getJoinRoleDatas(event.getGuild()) != null) {
+                        StringBuilder stringBuilder = new StringBuilder();
 
-                        MainMethods.getJoinRoleDatas(event.getGuild()).forEach(role1 -> {
+                        if (MainMethods.getJoinRoleDatas(event.getGuild()) != null) {
 
-                            if (!role1.getId().equals(role.getId())) {
+                            MainMethods.getJoinRoleDatas(event.getGuild()).forEach(role1 -> {
 
-                                stringBuilder
-                                        .append(role1.getIdLong())
-                                        .append(",");
+                                if (!role1.getId().equals(role.getId())) {
 
-                            }
+                                    stringBuilder
+                                            .append(role1.getIdLong())
+                                            .append(",");
 
-                        });
+                                }
+
+                            });
+
+                        }
+
+                        LiteSQL.onUpdate("UPDATE joinroles SET roles = '" + stringBuilder + "' WHERE guildid = " + event.getGuild().getIdLong());
+
+                    } else {
+
+                        Logger logger = LoggerFactory.getLogger(MemberJoinListener.class);
+                        logger.error("Unerwarteter Fehler.");
 
                     }
 
-                    LiteSQL.onUpdate("UPDATE joinroles SET roles = '" + stringBuilder + "' WHERE guildid = " + event.getGuild().getIdLong());
-
-                } else {
-
-                    Logger logger = LoggerFactory.getLogger(MemberJoinListener.class);
-                    logger.error("Unerwarteter Fehler.");
-
                 }
 
-            }
+            });
 
-        });
+        } catch (NullPointerException ignored) {
+
+        }
 
     }
 }

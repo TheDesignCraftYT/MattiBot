@@ -45,6 +45,7 @@ public interface UpdateFunctions {
         returnList.add(new String[]{Versions.versions().get("v100a8"), "/reportsystem", "SystemStatus zur Hauptseite hinzugefügt."});
         returnList.add(new String[]{Versions.versions().get("v100a8"), "/reportsystem", "Bugs beim Kanal-Festlegen behoben."});
         returnList.add(new String[]{Versions.versions().get("v100a8"), "/clear", "Für die Nachricht nach dem Löschen einen 'Fertig' Button eingebaut."});
+        returnList.add(new String[]{Versions.versions().get("v100a8"), "/joinroles", "Bugs gefixt."});
 
         return returnList;
 
