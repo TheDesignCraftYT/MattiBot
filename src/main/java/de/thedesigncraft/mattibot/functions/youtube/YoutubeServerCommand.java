@@ -15,7 +15,7 @@ import java.util.List;
 public class YoutubeServerCommand implements ServerCommand {
     @Override
     public String version() {
-        return Versions.versions().get("v100a7");
+        return Versions.versions().get("v100a8");
     }
 
     @Override
