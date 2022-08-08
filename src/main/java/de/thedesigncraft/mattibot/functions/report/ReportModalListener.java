@@ -29,12 +29,12 @@ public class ReportModalListener extends ListenerAdapter {
 
                     String informations =
                             "__Gemeldet von__: " + event.getUser().getAsMention() + "\n" +
-                            "__Typ__: " + "`USER`" + "\n" +
-                            "__Zeitpunkt__: " + "<t:" + Date.from(Instant.now()).getTime() / 1000L + ":R>" + "\n";
+                                    "__Typ__: " + "`USER`" + "\n" +
+                                    "__Zeitpunkt__: " + "<t:" + Date.from(Instant.now()).getTime() / 1000L + ":R>" + "\n";
 
                     embedBuilder.addField("Generelle Informationen", informations, false);
 
-                    embedBuilder.addField("Gemeldet", event.getGuild().getMemberById(event.getValue("user").getAsString().split(" ")[1].replace("(", "").replace(")", "")).getAsMention(), true);
+                    embedBuilder.addField("Gemeldet", event.getGuild().getMemberById(event.getValue("user").getAsString().replace("(", "III").split("III")[1].replace(")", "")).getAsMention(), true);
 
                     embedBuilder.addField("Channel", event.getChannel().getAsMention(), false);
 
@@ -68,12 +68,12 @@ public class ReportModalListener extends ListenerAdapter {
 
                     String informations =
                             "__Gemeldet von__: " + event.getUser().getAsMention() + "\n" +
-                            "__Typ__: " + "`MESSAGE`" + "\n" +
-                            "__Zeitpunkt__: " + "<t:" + Date.from(Instant.now()).getTime() / 1000L + ":R>" + "\n";
+                                    "__Typ__: " + "`MESSAGE`" + "\n" +
+                                    "__Zeitpunkt__: " + "<t:" + Date.from(Instant.now()).getTime() / 1000L + ":R>" + "\n";
 
                     embedBuilder.addField("Generelle Informationen", informations, false);
 
-                    String id = event.getValue("message").getAsString().split(" ")[1].replace("(", "").replace(")", "");
+                    String id = event.getValue("message").getAsString().replace("(", "III").split("III")[1].replace(")", "");
 
                     embedBuilder.addField("Author der gemeldeten Nachricht", event.getGuild().getMemberById(id).getAsMention(), true);
 

@@ -47,6 +47,11 @@ public interface UpdateFunctions {
         returnList.add(new String[]{Versions.versions().get("v100a8"), "/clear", "Für die Nachricht nach dem Löschen einen 'Fertig' Button eingebaut."});
         returnList.add(new String[]{Versions.versions().get("v100a8"), "/joinroles", "Bugs gefixt."});
 
+        // v1.0.0-alpha.9
+        returnList.add(new String[]{Versions.versions().get("v100a9"), "USER/report", "Bugs gefixt."});
+        returnList.add(new String[]{Versions.versions().get("v100a9"), "MESSAGE/report", "Bugs gefixt."});
+        returnList.add(new String[]{Versions.versions().get("v100a9"), "/help", "Bugs gefixt."});
+
         return returnList;
 
     }

@@ -387,9 +387,9 @@ public interface HelpEmbeds {
 
         EmbedBuilder embedBuilder = new EmbedBuilder();
 
-        embedBuilder.setTitle(command.category() + " » " + command.commandEmoji().getName() + " USER/" + CommandMethods.getMessageContextMenuName(command));
+        embedBuilder.setTitle(command.category() + " » " + command.commandEmoji().getName() + " MESSAGE/" + CommandMethods.getMessageContextMenuName(command));
 
-        String fieldValue = "```➤ USER/" + CommandMethods.getMessageContextMenuName(command) + "```";
+        String fieldValue = "```➤ MESSAGE/" + CommandMethods.getMessageContextMenuName(command) + "```";
 
         embedBuilder.addField("Anwendung", fieldValue, true);
         embedBuilder.addField("Beispiele", fieldValue, true);

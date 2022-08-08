@@ -1,8 +1,8 @@
 package de.thedesigncraft.mattibot.functions.help;
 
 import de.thedesigncraft.mattibot.commands.types.ServerCommand;
-import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
 import de.thedesigncraft.mattibot.constants.methods.CommandMethods;
+import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
 import de.thedesigncraft.mattibot.constants.values.commands.*;
 import de.thedesigncraft.mattibot.contextmenus.types.MessageContextMenu;
 import de.thedesigncraft.mattibot.contextmenus.types.UserContextMenu;
@@ -86,11 +86,11 @@ public class HelpServerCommand implements ServerCommand {
 
                 String arg2 = Categories.categories().get(arg);
 
-                ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(arg);
+                ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(arg.replace("/", ""));
 
-                UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(arg);
+                UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(arg.replace("USER/", ""));
 
-                MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(arg);
+                MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(arg.replace("MESSAGE/", ""));
 
                 if (arg2 != null) {
 
@@ -150,27 +150,29 @@ public class HelpServerCommand implements ServerCommand {
 
         } else if (event.getOption("category") == null && event.getOption("command") != null) {
 
-            ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(event.getOption("command").getAsString().replace("/", ""));
+            String[] commandArgs = event.getOption("command").getAsString().split("/");
 
-            UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(event.getOption("command").getAsString().replace("USER/", ""));
+            ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(commandArgs[1]);
 
-            MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(event.getOption("command").getAsString().replace("MESSAGE/", ""));
+            UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(commandArgs[1]);
 
-            if (slashCommand != null) {
+            MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(commandArgs[1]);
+
+            if (commandArgs.length == 2 && commandArgs[0].equals("")) {
 
                 event.replyEmbeds(HelpEmbeds.slashCommand(slashCommand, event.getChannel().asTextChannel())).addActionRow(HelpActionRows.command(slashCommand.category(), event.getMember().getIdLong())).queue();
 
-            } else if (userContextMenu != null) {
+            } else if (commandArgs.length == 2 && commandArgs[0].equals("USER")) {
 
                 event.replyEmbeds(HelpEmbeds.userCommand(userContextMenu)).addActionRow(HelpActionRows.command(userContextMenu.category(), event.getMember().getIdLong())).queue();
 
-            } else if (messageContextMenu != null) {
+            } else if (commandArgs.length == 2 && commandArgs[0].equals("MESSAGE")) {
 
                 event.replyEmbeds(HelpEmbeds.messageCommand(messageContextMenu)).addActionRow(HelpActionRows.command(messageContextMenu.category(), event.getMember().getIdLong())).queue();
 
             } else {
 
-                event.replyEmbeds(EmbedTemplates.issueEmbed("Ein unerwarteter Fehler ist aufgetreten.\n\nWenn dies passiert, melde es bitte umgehend dem Entwickler des Bots.", true)).queue();
+                event.replyEmbeds(EmbedTemplates.issueEmbed("Ein unerwarteter Fehler ist aufgetreten.\n\nWenn dies passiert, melde es bitte umgehend dem Entwickler des Bots.", false)).queue();
 
             }
 

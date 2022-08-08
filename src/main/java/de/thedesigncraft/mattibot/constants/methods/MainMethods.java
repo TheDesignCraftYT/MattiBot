@@ -4,7 +4,6 @@ import de.thedesigncraft.mattibot.MattiBot;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
 import de.thedesigncraft.mattibot.constants.values.TOKEN;
 import de.thedesigncraft.mattibot.constants.values.commands.Versions;
-import de.thedesigncraft.mattibot.functions.report.settings.ReportSystemActionRows;
 import de.thedesigncraft.mattibot.manage.LiteSQL;
 import net.dv8tion.jda.api.entities.*;
 import org.slf4j.Logger;
@@ -215,7 +214,7 @@ public interface MainMethods {
 
             String versionType = Versions.currentVersion().split("-")[1].replace(".", "III").split("III")[0];
 
-            if(versionType.equals("alpha")) {
+            if (versionType.equals("alpha")) {
 
                 return new String[]{"Alpha", TOKEN.alphaToken};
 
@@ -298,21 +297,16 @@ public interface MainMethods {
 
     static boolean reportSystemActive(Guild guild) {
 
-        String id = ReportSystemActionRows.mainPage(guild.getOwner()).get(0).getButtons().get(1).getId();
+        ResultSet reportSystem = LiteSQL.onQuery("SELECT active FROM reportSystem WHERE guildid = " + guild.getIdLong());
 
-        if (id.startsWith("reportSystem.on&id=")) {
-
-            return false;
-
-        } else if (id.startsWith("reportSystem.off&id=")) {
-
-            return true;
-
-        } else {
-
-            return false;
+        try {
+            return Boolean.parseBoolean(reportSystem.getString("active"));
+        } catch (SQLException ignored) {
 
         }
+
+        return false;
+
     }
 
     static boolean youtubeActive(Guild guild) {

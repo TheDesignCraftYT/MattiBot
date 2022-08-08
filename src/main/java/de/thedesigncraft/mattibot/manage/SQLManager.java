@@ -9,7 +9,7 @@ public class SQLManager {
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS prefix(guildid INTEGER, prefix STRING)");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS punishments(guildid INTEGER, userid INTEGER, punishments STRING)");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS joinroles(guildid INTEGER, roles STRING)");
-        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS reportSystem(guildid INTEGER, channel INTEGER, active BOOLEAN)");
+        LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS reportSystem(guildid INTEGER, channel INTEGER, active STRING)");
         LiteSQL.onUpdate("CREATE TABLE IF NOT EXISTS youtube(guildid INTEGER, channel INTEGER, message STRING, active STRING)");
 
     }

@@ -34,13 +34,13 @@ public class ReportSystemActionRowListener extends ListenerAdapter {
 
         } else if (StandardActionRows.proofButton(event, "reportSystem.on", user)) {
 
-            LiteSQL.onUpdate("UPDATE reportSystem SET active = " + true + " WHERE guildid = " + event.getGuild().getIdLong());
+            LiteSQL.onUpdate("UPDATE reportSystem SET active = 'true' WHERE guildid = " + event.getGuild().getIdLong());
 
             event.editMessageEmbeds(new EmbedBuilder(ReportSystemEmbeds.mainPage(event.getGuild())).appendDescription("\n\n```✅ System aktiviert.```").build()).setActionRows(ReportSystemActionRows.mainPage(event.getMember())).queue();
 
         } else if (StandardActionRows.proofButton(event, "reportSystem.off", user)) {
 
-            LiteSQL.onUpdate("UPDATE reportSystem SET active = " + false + " WHERE guildid = " + event.getGuild().getIdLong());
+            LiteSQL.onUpdate("UPDATE reportSystem SET active = 'false' WHERE guildid = " + event.getGuild().getIdLong());
 
             event.editMessageEmbeds(new EmbedBuilder(ReportSystemEmbeds.mainPage(event.getGuild())).appendDescription("\n\n```✅ System deaktiviert.```").build()).setActionRows(ReportSystemActionRows.mainPage(event.getMember())).queue();
 

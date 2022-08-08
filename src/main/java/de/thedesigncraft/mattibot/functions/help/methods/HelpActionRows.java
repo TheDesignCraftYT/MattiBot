@@ -35,7 +35,7 @@ public interface HelpActionRows {
 
         ServerCommands.serverCommands().forEach(serverCommand -> {
 
-            if(serverCommand.category().equals(category))
+            if (serverCommand.category().equals(category))
                 categorySlashCommands.add(serverCommand);
 
         });
@@ -56,9 +56,9 @@ public interface HelpActionRows {
 
         categorySlashCommands.forEach(serverCommand -> {
 
-            if(serverCommand.slashCommand()) {
+            if (serverCommand.slashCommand()) {
 
-                buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&slashCommand=" + CommandMethods.getServerCommandName(serverCommand) + "&id=" + userId, "/" + CommandMethods.getServerCommandName(serverCommand), serverCommand.commandEmoji()));
+                buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&command=/" + CommandMethods.getServerCommandName(serverCommand) + "&id=" + userId, "/" + CommandMethods.getServerCommandName(serverCommand), serverCommand.commandEmoji()));
 
             } else {
 
@@ -67,7 +67,7 @@ public interface HelpActionRows {
                 try {
                     String prefix1 = prefix.getString("prefix");
 
-                    buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&slashCommand=" + CommandMethods.getServerCommandName(serverCommand) + "&id=" + userId, prefix1 + CommandMethods.getServerCommandName(serverCommand), serverCommand.commandEmoji()));
+                    buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&command=/" + CommandMethods.getServerCommandName(serverCommand) + "&id=" + userId, prefix1 + CommandMethods.getServerCommandName(serverCommand), serverCommand.commandEmoji()));
 
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
@@ -77,9 +77,9 @@ public interface HelpActionRows {
 
         });
 
-        categoryUserCommands.forEach(userContextMenu -> buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&slashCommand=" + CommandMethods.getUserContextMenuName(userContextMenu) + "&id=" + userId, "USER/" + CommandMethods.getUserContextMenuName(userContextMenu), userContextMenu.commandEmoji())));
+        categoryUserCommands.forEach(userContextMenu -> buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&command=USER/" + CommandMethods.getUserContextMenuName(userContextMenu) + "&id=" + userId, "USER/" + CommandMethods.getUserContextMenuName(userContextMenu), userContextMenu.commandEmoji())));
 
-        categoryMessageCommands.forEach(messageContextMenu -> buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&slashCommand=" + CommandMethods.getMessageContextMenuName(messageContextMenu) + "&id=" + userId, "MESSAGE/" + CommandMethods.getMessageContextMenuName(messageContextMenu), messageContextMenu.commandEmoji())));
+        categoryMessageCommands.forEach(messageContextMenu -> buttons.add(Button.of(ButtonStyle.SUCCESS, "help.goToCommand&command=MESSAGE/" + CommandMethods.getMessageContextMenuName(messageContextMenu) + "&id=" + userId, "MESSAGE/" + CommandMethods.getMessageContextMenuName(messageContextMenu), messageContextMenu.commandEmoji())));
 
         List<ActionRow> returnList = new ArrayList<>();
 
@@ -103,7 +103,7 @@ public interface HelpActionRows {
 
                 returnList.add(ActionRow.of(buttons.subList(6, 10)));
                 returnList.add(ActionRow.of(buttons.subList(11, buttons.size())));
-                
+
             }
 
         } else {

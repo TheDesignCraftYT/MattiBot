@@ -23,29 +23,29 @@ public class HelpActionRowListener extends ListenerAdapter {
 
         if (StandardActionRows.proofButton(event, "help.goToCommand", user)) {
 
-            String arg = event.getButton().getId().split("&")[1].replace("slashCommand=", "");
+            String[] commandArgs = event.getButton().getId().split("&")[1].replace("command=", "").split("/");
 
-            ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(arg);
+            ServerCommand slashCommand = ServerCommandManager.slashCommandsMap.get(commandArgs[1]);
 
-            UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(arg);
+            UserContextMenu userContextMenu = ServerCommandManager.userContextMenuMap.get(commandArgs[1]);
 
-            MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(arg);
+            MessageContextMenu messageContextMenu = ServerCommandManager.messageContextMenuMap.get(commandArgs[1]);
 
-            if (slashCommand != null) {
+            if (commandArgs.length == 2 && commandArgs[0].equals("")) {
 
-                event.editMessageEmbeds(HelpEmbeds.slashCommand(slashCommand, event.getChannel().asTextChannel())).setActionRow(HelpActionRows.command(slashCommand.category(), event.getMember().getIdLong())).queue();
+                event.replyEmbeds(HelpEmbeds.slashCommand(slashCommand, event.getChannel().asTextChannel())).addActionRow(HelpActionRows.command(slashCommand.category(), event.getMember().getIdLong())).queue();
 
-            } else if (userContextMenu != null) {
+            } else if (commandArgs.length == 2 && commandArgs[0].equals("USER")) {
 
-                event.editMessageEmbeds(HelpEmbeds.userCommand(userContextMenu)).setActionRow(HelpActionRows.command(userContextMenu.category(), event.getMember().getIdLong())).queue();
+                event.replyEmbeds(HelpEmbeds.userCommand(userContextMenu)).addActionRow(HelpActionRows.command(userContextMenu.category(), event.getMember().getIdLong())).queue();
 
-            } else if (messageContextMenu != null) {
+            } else if (commandArgs.length == 2 && commandArgs[0].equals("MESSAGE")) {
 
-                event.editMessageEmbeds(HelpEmbeds.messageCommand(messageContextMenu)).setActionRow(HelpActionRows.command(messageContextMenu.category(), event.getMember().getIdLong())).queue();
+                event.replyEmbeds(HelpEmbeds.messageCommand(messageContextMenu)).addActionRow(HelpActionRows.command(messageContextMenu.category(), event.getMember().getIdLong())).queue();
 
             } else {
 
-                event.editMessageEmbeds(EmbedTemplates.issueEmbed("Ein unerwarteter Fehler ist aufgetreten.\n\nWenn dies passiert, melde es bitte umgehend dem Entwickler des Bots.", true)).queue();
+                event.replyEmbeds(EmbedTemplates.issueEmbed("Ein unerwarteter Fehler ist aufgetreten.\n\nWenn dies passiert, melde es bitte umgehend dem Entwickler des Bots.", false)).queue();
 
             }
 
@@ -66,7 +66,7 @@ public class HelpActionRowListener extends ListenerAdapter {
     @Override
     public void onSelectMenuInteraction(@NotNull SelectMenuInteractionEvent event) {
 
-        if(StandardActionRows.proofSelectMenu(event, "help.goToCategory", event.getUser())) {
+        if (StandardActionRows.proofSelectMenu(event, "help.goToCategory", event.getUser())) {
 
             String arg = event.getSelectedOptions().get(0).getLabel();
 

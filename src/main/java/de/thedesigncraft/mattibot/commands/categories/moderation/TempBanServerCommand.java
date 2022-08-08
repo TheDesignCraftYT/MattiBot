@@ -344,20 +344,26 @@ public class TempBanServerCommand implements ServerCommand {
 
                 List<Long> endTimestamps = new ArrayList<>();
 
-                assert tempbans != null;
-                tempbans.forEach(s -> {
+                try {
 
-                    long endTimestamp = Long.parseLong(s[2]);
+                    assert tempbans != null;
+                    tempbans.forEach(s -> {
 
-                    long latestBanTimestamp = Long.parseLong(userBans.get(userBans.size()-1)[1]);
+                        long endTimestamp = Long.parseLong(s[2]);
 
-                    if (new Date(latestBanTimestamp * 1000L).before(new Date(endTimestamp * 1000L))) {
+                        long latestBanTimestamp = Long.parseLong(userBans.get(userBans.size() - 1)[1]);
 
-                        endTimestamps.add(endTimestamp);
+                        if (new Date(latestBanTimestamp * 1000L).before(new Date(endTimestamp * 1000L))) {
 
-                    }
+                            endTimestamps.add(endTimestamp);
 
-                });
+                        }
+
+                    });
+
+                } catch (IndexOutOfBoundsException ignored) {
+
+                }
 
                 List<Boolean> ifTime = new ArrayList<>();
 

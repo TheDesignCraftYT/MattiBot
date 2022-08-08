@@ -18,6 +18,7 @@ public interface Versions {
         returnList.add("v1.0.0-alpha.6");
         returnList.add("v1.0.0-alpha.7");
         returnList.add("v1.0.0-alpha.8");
+        returnList.add("v1.0.0-alpha.9");
 
         return returnList;
 

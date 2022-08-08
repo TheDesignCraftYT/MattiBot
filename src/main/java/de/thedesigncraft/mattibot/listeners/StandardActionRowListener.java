@@ -1,5 +1,6 @@
 package de.thedesigncraft.mattibot.listeners;
 
+import de.thedesigncraft.mattibot.commands.types.OneSelectionMenu;
 import de.thedesigncraft.mattibot.constants.methods.EmbedTemplates;
 import de.thedesigncraft.mattibot.constants.methods.StandardActionRows;
 import de.thedesigncraft.mattibot.constants.values.MainValues;
@@ -20,6 +21,8 @@ public class StandardActionRowListener extends ListenerAdapter {
     @Override
     public void onSelectMenuInteraction(@NotNull SelectMenuInteractionEvent event) {
 
+        OneSelectionMenu.onSelectMenuInteraction(event);
+
         try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException ignored) {
@@ -28,7 +31,7 @@ public class StandardActionRowListener extends ListenerAdapter {
         if (!event.isAcknowledged()) {
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
-            embedBuilder.copyFrom(EmbedTemplates.issueEmbed("Ein __SelectMenu__ mit einer unbekannten Id wurde benutzt.", false));
+            embedBuilder.copyFrom(EmbedTemplates.issueEmbed("Ein SelectMenu mit einer unbekannten Id wurde benutzt.", false));
             embedBuilder.addField("SelectMenuId", "```" + Objects.requireNonNull(event.getSelectMenu().getId()).split("&id=")[0] + "```", true);
             embedBuilder.addField("User", "```" + event.getUser().getAsTag() + "```", true);
             embedBuilder.addField("Server", "```" + Objects.requireNonNull(event.getGuild()).getName() + "```", true);
@@ -47,6 +50,8 @@ public class StandardActionRowListener extends ListenerAdapter {
     public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
 
         User user = event.getUser();
+
+        OneSelectionMenu.onButtonInteraction(event);
 
         if (StandardActionRows.proofButton(event, "cancel", user)) {
 

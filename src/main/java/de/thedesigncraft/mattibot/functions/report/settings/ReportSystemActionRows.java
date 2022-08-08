@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.ItemComponent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
@@ -68,7 +67,7 @@ public interface ReportSystemActionRows {
         ResultSet reportSystem = LiteSQL.onQuery("SELECT active FROM reportSystem WHERE guildid = " + member.getGuild().getIdLong());
 
         try {
-            boolean active = reportSystem.getBoolean("active");
+            boolean active = Boolean.parseBoolean(reportSystem.getString("active"));
 
             if (active) {
 
